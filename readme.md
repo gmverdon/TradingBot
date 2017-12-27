@@ -11,7 +11,7 @@ npm install
 ```
 
 ## 2. API key and secret
-Add a .env file in the root of the folder and add your binance api variables in the following manner:
+Add a .env file in the root folder and add your binance api variables in the following manner:
 
 ```sh
 # Binance api variables
