@@ -1,0 +1,23 @@
+{
+  "name": "trading-bot",
+  "version": "1.0.0",
+  "description": "Trading Bot for binance",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Trading",
+    "Bot",
+    "Binance"
+  ],
+  "author": "Gijs Verdonschot",
+  "license": "ISC",
+  "dependencies": {
+    "node-binance-api": "^0.2.13"
+  },
+  "devDependencies": {
+    "dotenv": "^4.0.0"
+  }
+}
