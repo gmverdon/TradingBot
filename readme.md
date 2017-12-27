@@ -1,4 +1,4 @@
-## Trading bot!
+## Trading bot! :money_with_wings::chart_with_upwards_trend:
 
 For as now this trading bot only supports Binance. To use this bot follow these steps:
 
