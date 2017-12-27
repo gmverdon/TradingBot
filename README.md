@@ -1,5 +1,6 @@
-Trading bot!
+## Trading bot!
 
+As of now this trading bot only supports Binance!
 To use this bot follow these steps:
 
 ## 1. Cloning
@@ -10,7 +11,8 @@ cd trade-bot
 npm install
 ```
 
-## 2. add a .env file in the root of the folder and add your binance api variables in the following manner:
+## 2. Add API keys and secrets
+Add a .env file in the root of the folder and add your binance api variables in the following manner:
 
 ```sh
 # Binance api variables
