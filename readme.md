@@ -1,6 +1,6 @@
 ## Trading bot! :money_with_wings::chart_with_upwards_trend:
 
-For as now this trading bot only supports Binance. To use this bot follow these steps:
+For as now this trading bot only supports [Binance](https://www.binance.com). To use this bot follow these steps:
 
 ## 1. Cloning
 
@@ -28,3 +28,4 @@ npm start
 Go to lib/bot.js and change the variables in the constructor.
 
 ## 5. Happy Trading
+Use at your own risk.
