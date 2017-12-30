@@ -1,6 +1,6 @@
 const binance = require('node-binance-api');
 
-module.exports = class Bot {
+export default new Bot() {
 
   constructor(opts) {
     this.boughtPrice = 15290;
