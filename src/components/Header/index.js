@@ -1,20 +1,36 @@
 import React, { Component } from 'react';
 import './styles.css';
 
+// Libraries
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
+
+// Components
+import Home from '../scenes/Home';
+import TradeHub from '../scenes/TradeHub';
+
 class Header extends Component {
   render() {
     return (
-      <div>
+      <Router>
         <div>
-          <h2>TradingMaster</h2>
+          <div>
+            <h2>TradingMaster</h2>
+          </div>
+          <div>
+            <ul>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/tradehub">TradeHub</Link></li>
+            </ul>
+
+            <Route exact path="/" component={Home}/>
+            <Route path="/tradehub" component={TradeHub}/>
+          </div>
         </div>
-        <div>
-          <h5>Link4</h5>
-          <h5>Link3</h5>
-          <h5>Link2</h5>
-          <h5>Link1</h5>
-        </div>
-      </div>
+      </Router>
     )
   }
 }
