@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './styles.css';
-import Header from './components/Header';
 import binance from 'binance-api';
 
 class Home extends Component {
