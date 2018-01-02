@@ -5,20 +5,17 @@ class InfoPanel extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          <h2>€ 460,63</h2>
+      <div className="panel">
+        <div className="panelContent">
+          <h2>€ {this.props.currentPrice}</h2>
         </div>
-        <div>
-          <div>
-            <img></img>
-            <h4>Ethereum</h4>
-          </div>
-          <div>
-            <h4>
-              <i>Bought price</i>
-            </h4>
-          </div>
+        <div className="panelFooter">
+          <h4>
+            <i class="fab fa-ethereum"></i> Ethereum
+          </h4>
+          <h4>
+            <i>Bought price</i>
+          </h4>
         </div>
       </div>
     )

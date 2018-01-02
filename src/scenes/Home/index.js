@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './styles.css';
 import Header from './components/Header';
 import binance from 'binance-api';
+import InfoPanel from '../../components/InfoPanel';
 
 class Home extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Home extends Component {
 
   render() {
     return (
-      <h1>Current price: {this.state.currentPrice}</h1>
+      <InfoPanel currentPrice={this.state.currentPrice}/>
     )
   }
 }
