@@ -24,6 +24,14 @@
     transition: background-color 0.5s;
 }
 
+.profit {
+    background: rgba(36,193,65,1); 
+}
+
+.lost {
+    background: rgba(249,64,64,1); 
+}
+
 /* Transition not working because of gradient and filter in bottom layer */
 /*
 .panelContent:hover {

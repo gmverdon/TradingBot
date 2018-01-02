@@ -9,8 +9,8 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      currentPrice: 15290,
-      boughtPrice: 15290,
+      currentPrice: 15290.99,
+      boughtPrice: 15290.99,
       diffPercentage : 0.01,
       messages: []
     }
