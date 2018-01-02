@@ -1,35 +1,36 @@
 .panel {
-    width: 250px;
-    height: 250px;
-    margin-left: 50px;
-    margin-top: 50px;
-    -webkit-box-shadow: 0px 20px 50px 0px rgba(153,153,153,0.4);
-    -moz-box-shadow: 0px 20px 50px 0px rgba(153,153,153,0.4);
-    box-shadow: 0px 20px 50px 0px rgba(153,153,153,0.4);
+  width: 250px;
+  height: 250px;
+  margin-left: 50px;
+  margin-top: 50px;
+  -webkit-box-shadow: 0px 20px 50px 0px rgba(153,153,153,0.4);
+  -moz-box-shadow: 0px 20px 50px 0px rgba(153,153,153,0.4);
+  box-shadow: 0px 20px 50px 0px rgba(153,153,153,0.4);
+  display: block;
 }
 
 .panelContent {
-    width: 100%;
-    background: rgba(16,101,146,1);
-    background: -moz-linear-gradient(top, rgba(16,101,146,1) 0%, rgba(1,138,197,1) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(16,101,146,1)), color-stop(100%, rgba(1,138,197,1)));
-    background: -webkit-linear-gradient(top, rgba(16,101,146,1) 0%, rgba(1,138,197,1) 100%);
-    background: -o-linear-gradient(top, rgba(16,101,146,1) 0%, rgba(1,138,197,1) 100%);
-    background: -ms-linear-gradient(top, rgba(16,101,146,1) 0%, rgba(1,138,197,1) 100%);
-    background: linear-gradient(to bottom, rgba(16,101,146,1) 0%, rgba(1,138,197,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#106592', endColorstr='#018ac5', GradientType=0 );
-    height: 80%;
-    text-align: center;
-    color: white;
-    transition: background-color 0.5s;
+  width: 100%;
+  background: rgba(16,101,146,1);
+  background: -moz-linear-gradient(top, rgba(16,101,146,1) 0%, rgba(1,138,197,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(16,101,146,1)), color-stop(100%, rgba(1,138,197,1)));
+  background: -webkit-linear-gradient(top, rgba(16,101,146,1) 0%, rgba(1,138,197,1) 100%);
+  background: -o-linear-gradient(top, rgba(16,101,146,1) 0%, rgba(1,138,197,1) 100%);
+  background: -ms-linear-gradient(top, rgba(16,101,146,1) 0%, rgba(1,138,197,1) 100%);
+  background: linear-gradient(to bottom, rgba(16,101,146,1) 0%, rgba(1,138,197,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#106592', endColorstr='#018ac5', GradientType=0 );
+  height: 80%;
+  text-align: center;
+  color: white;
+  transition: background-color 0.5s;
 }
 
 .profit {
-    background: rgba(36,193,65,1); 
+  background: rgba(36,193,65,1); 
 }
 
 .lost {
-    background: rgba(249,64,64,1); 
+  background: rgba(249,64,64,1); 
 }
 
 /* Transition not working because of gradient and filter in bottom layer */
@@ -40,24 +41,30 @@
 */
 
 .panel h2 {
-    font-weight: 300;
-    font-size: 2.3rem;
-    padding-top: 32%;
+  font-weight: 300;
+  font-size: 2.3rem;
+  padding-top: 32%;
+  margin-top: 0px;
 }
 
 .panel h4:first-of-type {
-    float: left;
-    padding-left: 15px;
-    margin-top: 17px;
+  float: left;
+  padding-left: 15px;
+  margin-top: 17px;
 }
 
 .panel h4:last-of-type {
-    float: right;
-    padding-right: 15px;
-    margin-top: 17px;
+  float: right;
+  padding-right: 15px;
+  margin-top: 17px;
 }
 
 .panelFooter {
-    background-color: white;
-    height: 20%;
+  background-color: white;
+  height: 20%;
+}
+
+.row {
+  display: flex; 
+  flex-wrap: wrap;
 }

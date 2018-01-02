@@ -5,7 +5,7 @@ class InfoPanel extends Component {
 
   render() {
     return (
-      <div>
+      <div className="row">
       
         <div className="panel">
           <div className="panelContent">
