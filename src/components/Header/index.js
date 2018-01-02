@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import './styles.css';
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class Header extends Component {
   render() {
     return (
-      <h1>Current price: {this.state.currentPrice}</h1>
+      <div>
+        <div>
+          <h2>TradingMaster</h2>
+        </div>
+        <div>
+          <h5>Link4</h5>
+          <h5>Link3</h5>
+          <h5>Link2</h5>
+          <h5>Link1</h5>
+        </div>
+      </div>
     )
   }
 }
