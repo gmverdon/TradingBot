@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import './styles.css';
-import Header from './components/Header';
+
+// Libraries
 import binance from 'binance-api';
+
+// Components
+import Header from '../../components/Header';
 
 class Home extends Component {
   constructor(props) {
@@ -37,7 +41,12 @@ class Home extends Component {
 
   render() {
     return (
-      <h1>Current price: {this.state.currentPrice}</h1>
+      <div>
+        <Header />
+        <div>
+          <h1>Current price: {this.state.currentPrice}</h1>
+        </div>
+      </div>
     )
   }
 }
