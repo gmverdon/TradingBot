@@ -9,26 +9,20 @@ import {
 } from 'react-router-dom'
 
 // Components
-import Home from '../scenes/Home';
-import TradeHub from '../scenes/TradeHub';
+import Home from '../../scenes/Home';
 
 class Header extends Component {
   render() {
     return (
       <Router>
         <div>
-          <div>
-            <h2>TradingMaster</h2>
-          </div>
-          <div>
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/tradehub">TradeHub</Link></li>
-            </ul>
+          <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/topics">Topics</Link></li>
+          </ul>
 
-            <Route exact path="/" component={Home}/>
-            <Route path="/tradehub" component={TradeHub}/>
-          </div>
+          <hr/>
         </div>
       </Router>
     )
