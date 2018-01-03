@@ -16,7 +16,9 @@ class TradeHub extends Component {
       boughtPrice: 14800,
       diffPercentage: 0.01,
       highestPrice: 0,
-      messages: []
+      messages: [],
+      sellEnabled: false,
+      hasSold: false
     }
 
     binance.options({
@@ -24,6 +26,11 @@ class TradeHub extends Component {
       'APISECRET':   props.opts.binance.secret,
       'recvWindow': 60000
     })
+
+    // bindings
+    this.setBoughtPrice = this.setBoughtPrice.bind(this);
+    this.setDiffPercentage = this.setDiffPercentage.bind(this);
+    this.toggleSellEnabled = this.toggleSellEnabled.bind(this);
   }
 
   componentDidMount() {
@@ -52,7 +59,7 @@ class TradeHub extends Component {
       }
     }
   }
-  
+
   isHighestPrice(currentPrice) {
     let isHighestPrice = currentPrice > this.state.highestPrice;
     return isHighestPrice;
@@ -67,12 +74,37 @@ class TradeHub extends Component {
   }
 
   shouldSell(currentPrice) {
-    let shouldSell = (currentPrice <= (this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage));
-    return shouldSell;
+    if (this.state.sellEnabled && !this.state.hasSold) {
+      let shouldSell = (currentPrice <= (this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage));
+      return shouldSell;
+    }
   }
 
   sell(currentPrice) {
+    alert("SOLD at " + currentPrice);
     console.log("SOLD at " + currentPrice);
+    this.setState({
+      hasSold: true
+    })
+  }
+
+  setBoughtPrice(e) {
+    this.setState({
+      boughtPrice: e.target.value
+    })
+  }
+
+  setDiffPercentage(e) {
+    let diffPercentage = (e.target.value / 100);
+    this.setState({
+      diffPercentage: diffPercentage
+    })
+  }
+
+  toggleSellEnabled() {
+    this.setState({
+      sellEnabled: !this.state.sellEnabled
+    })
   }
 
   render() {
@@ -82,13 +114,33 @@ class TradeHub extends Component {
         <div>
           <h1>Current price: {this.state.currentPrice}</h1>
           <hr/>
-          <h1>Bought at this price: {this.state.boughtPrice}</h1>
+          <h1>Bought at this price:</h1>
+          <input
+            type="number"
+            step="0.01"
+            placeholder="Price at which you bought."
+            onChange={this.setBoughtPrice}
+            value={this.state.boughtPrice}/>
           <hr/>
           <h1>Highest price since bought: {this.state.highestPrice}</h1>
           <hr/>
           <h1>Will sell at: {(this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage)} </h1>
           <p>(only when the price is higher then the boughtPrice). <br/>
-            Difference between highestprice and sell price is {this.state.diffPercentage * 100}%</p>
+            Difference between highestprice and sell price is {(this.state.diffPercentage * 100).toFixed(2)}%</p>
+            <input
+              type="number"
+              step="0.01"
+              placeholder="Difference between highestprice and sell price."
+              onChange={this.setDiffPercentage}
+              value={(this.state.diffPercentage * 100).toFixed(2)}/>
+          <hr/>
+          <p>Can sell (if enabled, the bot will sell at {(this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage)})</p>
+          <input
+            type="checkbox"
+            onChange={this.toggleSellEnabled}
+            checked={this.state.sellEnabled}/>
+          <hr/>
+          <h1>Sold: {this.state.hasSold.toString()}</h1>
         </div>
       </div>
     )
