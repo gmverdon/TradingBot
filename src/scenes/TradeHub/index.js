@@ -12,9 +12,10 @@ class TradeHub extends Component {
     super(props);
 
     this.state = {
-      currentPrice: 15290,
-      boughtPrice: 15290,
-      diffPercentage : 0.01,
+      currentPrice: 14800,
+      boughtPrice: 14800,
+      diffPercentage: 0.01,
+      highestPrice: 0,
       messages: []
     }
 
@@ -34,7 +35,44 @@ class TradeHub extends Component {
       self.setState({
         currentPrice: close
       })
+      self.checkPrice(close);
     });
+  }
+
+  checkPrice(currentPrice) {
+    if (currentPrice > this.state.boughtPrice) {
+      if (this.isHighestPrice(currentPrice)) {
+        this.setHighestPrice(currentPrice);
+        return;
+      }
+
+      if (this.shouldSell(currentPrice)) {
+        this.sell(currentPrice);
+        return;
+      }
+    }
+  }
+  
+  isHighestPrice(currentPrice) {
+    let isHighestPrice = currentPrice > this.state.highestPrice;
+    return isHighestPrice;
+  }
+
+  setHighestPrice(currentPrice) {
+    console.log("Previous highestPrice: " + this.state.highestPrice);
+    this.setState({
+      highestPrice: currentPrice
+    })
+    console.log("New highestPrice: " + this.state.highestPrice)
+  }
+
+  shouldSell(currentPrice) {
+    let shouldSell = (currentPrice <= (this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage));
+    return shouldSell;
+  }
+
+  sell(currentPrice) {
+    console.log("SOLD at " + currentPrice);
   }
 
   render() {
@@ -43,6 +81,14 @@ class TradeHub extends Component {
         <Header />
         <div>
           <h1>Current price: {this.state.currentPrice}</h1>
+          <hr/>
+          <h1>Bought at this price: {this.state.boughtPrice}</h1>
+          <hr/>
+          <h1>Highest price since bought: {this.state.highestPrice}</h1>
+          <hr/>
+          <h1>Will sell at: {(this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage)} </h1>
+          <p>(only when the price is higher then the boughtPrice). <br/>
+            Difference between highestprice and sell price is {this.state.diffPercentage * 100}%</p>
         </div>
       </div>
     )
