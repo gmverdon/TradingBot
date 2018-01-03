@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles.css';
-import Home from './scenes/Home';
+import Root from './scenes';
 import registerServiceWorker from './services/registerServiceWorker';
 
-const dotenv = require('dotenv').config()
+const dotenv = require('dotenv').config();
 const opts = {
   binance: {
     key:    process.env.REACT_APP_BINANCE_KEY,
@@ -12,6 +12,5 @@ const opts = {
   }
 }
 
-
-ReactDOM.render(<Home opts={opts} />, document.getElementById('root'));
+ReactDOM.render(<Root opts={opts} />, document.getElementById('root'));
 registerServiceWorker();
