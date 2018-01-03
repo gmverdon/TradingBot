@@ -17,12 +17,14 @@ class Root extends Component {
     return (
       <MuiThemeProvider>
         <Router>
+          <div>
             <Route exact path='/' render={(props) => (
               <Home opts={this.props.opts} />
             )}/>
             <Route exact path='/tradehub' render={(props) => (
               <TradeHub opts={this.props.opts} />
             )}/>
+          </div>
         </Router>
       </MuiThemeProvider>
     )
