@@ -1,0 +1,17 @@
+.list {
+  width: 60%;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+.tabContainer {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  overflow-x: auto;
+}
+
+.tabItem {
+  border: 0;
+  border-right: 1px solid #EAEAEA;
+}

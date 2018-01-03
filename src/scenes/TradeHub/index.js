@@ -6,6 +6,7 @@ import binance from 'binance-api';
 
 // Components
 import Header from '../../components/Header';
+import HorizontalTabList from '../../components/HorizontalTabList';
 
 class TradeHub extends Component {
   constructor(props) {
@@ -111,6 +112,7 @@ class TradeHub extends Component {
     return (
       <div>
         <Header />
+        <HorizontalTabList />
         <div>
           <h1>Current price: {this.state.currentPrice}</h1>
           <hr/>
