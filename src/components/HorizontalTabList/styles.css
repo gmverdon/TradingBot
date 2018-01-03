@@ -12,6 +12,6 @@
 }
 
 .tabItem {
-  border: 0;
   border-right: 1px solid #EAEAEA;
+  padding: 0 5px;
 }
