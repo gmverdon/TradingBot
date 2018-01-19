@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
 import './styles.css';
 
+// Bootstrap components
+import { Card, CardHeader, CardText, CardBody,
+  CardTitle, CardSubtitle, Button } from 'reactstrap';
+
 class InfoPanel extends Component {
 
   render() {
     return (
       <div>
-        <div>
-          <h2>€ 460,63</h2>
-        </div>
-        <div>
-          <div>
-            <img></img>
-            <h4>Ethereum</h4>
-          </div>
-          <div>
-            <h4>
-              <i>Bought price</i>
-            </h4>
-          </div>
-        </div>
+        <Card>
+          <CardBody>
+            <CardTitle>{this.props.title}</CardTitle>
+            <CardSubtitle>{this.props.subtitle}</CardSubtitle>
+            <CardText>{this.props.description}</CardText>
+          </CardBody>
+        </Card>
       </div>
     )
   }

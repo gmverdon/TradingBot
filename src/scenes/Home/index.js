@@ -23,8 +23,6 @@ class Home extends Component {
       'APISECRET':   props.opts.binance.secret,
       'recvWindow': 60000
     })
-
-    //this.logPrices();
   }
 
   componentDidMount() {
