@@ -1,17 +1,18 @@
-.list {
-  width: 60%;
-  margin: 0 auto;
-  margin-top: 40px;
+.tablist {
+    overflow: auto;
+    white-space:nowrap;
+    border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-.tabContainer {
-  display: flex;
-  flex-direction: row;
-  padding: 0;
-  overflow-x: auto;
+.tablist .list-inline-item {
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 20px;
+  margin-right: 0px;
 }
 
-.tabItem {
-  border-right: 1px solid #EAEAEA;
-  padding: 0 5px;
+.active {
+  z-index: 2;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
 }

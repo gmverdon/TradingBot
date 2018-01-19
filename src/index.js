@@ -1,9 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+// Libraries
+import registerServiceWorker from './services/registerServiceWorker';
+
+// Styles
 import './styles.css';
 import 'bootstrap/dist/css/bootstrap.css';
+
+// Components
 import Root from './scenes';
-import registerServiceWorker from './services/registerServiceWorker';
 
 const dotenv = require('dotenv').config();
 const opts = {
