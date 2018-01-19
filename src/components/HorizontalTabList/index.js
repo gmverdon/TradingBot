@@ -122,8 +122,8 @@ class HorizontalTabList extends Component {
       <Paper className="list" zDepth={1}>
         <List className="tabContainer">
           {tilesData.map((tile, i) => (
-            <div className="tabItem">
-              <ListItem key={i} primaryText={tile.title} />
+            <div className="tabItem" key={i}>
+              <ListItem primaryText={tile.title} />
             </div>
           ))}
         </List>

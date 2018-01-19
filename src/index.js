@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import Root from './scenes';
 import registerServiceWorker from './services/registerServiceWorker';
 
