@@ -15,7 +15,6 @@ class InfoPanel extends Component {
             <CardTitle>{this.props.title}</CardTitle>
             <CardSubtitle>{this.props.subtitle}</CardSubtitle>
             <CardText>{this.props.description}</CardText>
-            <Button>Button</Button>
           </CardBody>
         </Card>
       </div>
