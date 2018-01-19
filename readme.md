@@ -1,4 +1,6 @@
-## Trading bot! :money_with_wings::chart_with_upwards_trend:
+# Trading bot! :money_with_wings::chart_with_upwards_trend:
+[![npm](https://img.shields.io/npm/v/npm.svg)]()
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/gmverdon/TradingBot/issues)
 
 For as now this trading bot only supports [Binance](https://www.binance.com). To use this bot follow these steps:
 
