@@ -125,9 +125,9 @@ class TradeHub extends Component {
         <div class="container">
           <HorizontalTabList selectedCrypto={this.state.selectedCrypto}/>
           <div class="row">
-            <div class="col-sm"><InfoPanel title={currentPrice} description={selectedCrypto + " current price"}/></div>
-            <div class="col-sm"><InfoPanel title={highestPrice} description={selectedCrypto + " hightest price since bought"}/></div>
-            <div class="col-sm"><InfoPanel title={sellPrice} description={selectedCrypto + " price to sell on"}/></div>
+            <div class="col-sm"><InfoPanel title={"$ " + currentPrice} description={selectedCrypto + " current price"}/></div>
+            <div class="col-sm"><InfoPanel title={"$ " + highestPrice} description={selectedCrypto + " hightest price since bought"}/></div>
+            <div class="col-sm"><InfoPanel title={"$ " + sellPrice} description={selectedCrypto + " price to sell on"}/></div>
           </div>
         </div>
 
