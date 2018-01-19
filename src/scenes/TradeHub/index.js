@@ -6,7 +6,7 @@ import binance from 'binance-api';
 
 // Components
 import Header from '../../components/Header';
-import HorizontalTabList from '../../components/HorizontalTabList';
+//import HorizontalTabList from '../../components/HorizontalTabList';
 import InfoPanel from '../../components/InfoPanel';
 
 class TradeHub extends Component {
@@ -114,10 +114,12 @@ class TradeHub extends Component {
       <div>
         <Header />
 
-        <HorizontalTabList />
-
-        <div>
-          <InfoPanel title="Bitcoin" discription="Bitcoin growth since bought"/>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm"><InfoPanel title="Bitcoin" description="Bitcoin growth since bought" price={this.state.currentPrice}/></div>
+            <div class="col-sm"><InfoPanel title="Bitcoin" description="Bitcoin growth since bought"/></div>
+            <div class="col-sm"><InfoPanel title="Bitcoin" description="Bitcoin growth since bought"/></div>
+          </div>
         </div>
 
         <div>

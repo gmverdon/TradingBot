@@ -2,37 +2,38 @@ import React, { Component } from 'react';
 import './styles.css';
 
 // Libraries
-import { Link } from 'react-router-dom'
-import {AppBar, Tabs, Tab} from 'material-ui';
+import { NavLink } from 'react-router-dom'
+
+// Boostrap compopnents
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem } from 'reactstrap';
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: 0
-    }
-
-    // bindings
-    this.changeTab = this.changeTab.bind(this);
-  }
-
-  changeTab(value) {
-    console.log(value);
-    this.setState({
-      value: value
-    })
-  }
-
 
   render() {
     return (
-      <AppBar title="TradeHub">
-        <Tabs onChange={this.changeTab} value={this.state.value} >
-          <Tab value={0} label="Home" containerElement={<Link to="/" />} />
-          <Tab value={1} label="TradeHub" containerElement={<Link to="/tradehub"/>}/>
-        </Tabs>
-      </AppBar>
+      <div>
+        <Navbar color="faded" light expand="md">
+          <NavbarBrand href="/">TradeHub</NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={true} navbar>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink to="/tradehub">TradeHub</NavLink>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Navbar>
+      </div>
     )
   }
 }
