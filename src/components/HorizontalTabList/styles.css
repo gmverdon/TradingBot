@@ -10,7 +10,7 @@
   margin-right: 0px;
 }
 
-.active {
+.tablist > .active {
   z-index: 2;
   color: #fff;
   background-color: #007bff;

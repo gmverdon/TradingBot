@@ -14,6 +14,7 @@ class TradeHub extends Component {
     super(props);
 
     this.state = {
+      selectedCrypto: "Bitcoin",
       currentPrice: 14800,
       boughtPrice: 14800,
       diffPercentage: 0.01,
@@ -41,10 +42,12 @@ class TradeHub extends Component {
       let { e:eventType, E:eventTime, s:symbol, k:ticks } = candlesticks;
       let { o:open, h:high, l:low, c:close, v:volume, n:trades, i:interval, x:isFinal, q:quoteVolume, V:buyVolume, Q:quoteBuyVolume } = ticks;
       //console.log(symbol+" "+interval+" candlestick update");
+      let currentPrice = parseFloat(close);
+
       self.setState({
-        currentPrice: close
+        currentPrice: currentPrice
       })
-      self.checkPrice(close);
+      self.checkPrice(currentPrice);
     });
   }
 
@@ -110,16 +113,21 @@ class TradeHub extends Component {
   }
 
   render() {
+    let selectedCrypto = this.state.selectedCrypto;
+    let currentPrice = this.state.currentPrice.toFixed(2);
+    let highestPrice = this.state.highestPrice.toFixed(2);;
+    let sellPrice = (highestPrice - highestPrice * this.state.diffPercentage).toFixed(2);
+
     return (
       <div>
         <Header />
 
         <div class="container">
-          <HorizontalTabList />
+          <HorizontalTabList selectedCrypto={this.state.selectedCrypto}/>
           <div class="row">
-            <div class="col-sm"><InfoPanel title="Bitcoin" description="Bitcoin growth since bought" price={this.state.currentPrice}/></div>
-            <div class="col-sm"><InfoPanel title="Bitcoin" description="Bitcoin growth since bought"/></div>
-            <div class="col-sm"><InfoPanel title="Bitcoin" description="Bitcoin growth since bought"/></div>
+            <div class="col-sm"><InfoPanel title={currentPrice} description={selectedCrypto + " current price"}/></div>
+            <div class="col-sm"><InfoPanel title={highestPrice} description={selectedCrypto + " hightest price since bought"}/></div>
+            <div class="col-sm"><InfoPanel title={sellPrice} description={selectedCrypto + " price to sell on"}/></div>
           </div>
         </div>
 

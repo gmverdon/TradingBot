@@ -12,115 +12,82 @@ const tilesData = [
     title: 'Ripple',
   },
   {
-    title: 'Ethereum',
+    title: 'Request Network',
   },
   {
-    title: 'Bitcoin',
+    title: 'Substratum',
   },
   {
-    title: 'Ripple',
+    title: 'Ethereum Classic',
   },
   {
-    title: 'Ethereum',
+    title: 'IOTA',
   },
   {
-    title: 'Bitcoin',
+    title: 'Bitconnect',
   },
   {
-    title: 'Ripple',
+    title: 'Basic Attention Token',
   },
   {
-    title: 'Ethereum',
+    title: 'Stellar',
   },
   {
-    title: 'Bitcoin',
+    title: 'NEO',
   },
   {
-    title: 'Ripple',
+    title: 'Litecoin',
   },
   {
-    title: 'Ethereum',
+    title: 'Cardano',
   },
   {
-    title: 'Bitcoin',
+    title: 'TRON',
   },
   {
-    title: 'Ripple',
+    title: 'Monero',
   },
   {
-    title: 'Ethereum',
+    title: 'ICON',
   },
   {
-    title: 'Bitcoin',
+    title: 'Qtum',
   },
   {
-    title: 'Ripple',
+    title: 'Lisk',
   },
   {
-    title: 'Ethereum',
+    title: 'Binance Coin',
   },
   {
-    title: 'Bitcoin',
-  },
-  {
-    title: 'Ripple',
-  },
-  {
-    title: 'Ethereum',
-  },
-  {
-    title: 'Bitcoin',
-  },
-  {
-    title: 'Ripple',
-  },
-  {
-    title: 'Ethereum',
-  },
-  {
-    title: 'Bitcoin',
-  },
-  {
-    title: 'Ripple',
-  },
-  {
-    title: 'Ethereum',
-  },
-  {
-    title: 'Bitcoin',
-  },
-  {
-    title: 'Ripple',
-  },
-  {
-    title: 'Ethereum',
-  },
-  {
-    title: 'Bitcoin',
-  },
-  {
-    title: 'Ripple',
-  },
-  {
-    title: 'Ethereum',
-  },
-  {
-    title: 'Bitcoin',
-  },
-  {
-    title: 'Ripple',
-  },
+    title: 'VeChain',
+  }
 ];
 
 class HorizontalTabList extends Component {
+  getListItems() {
+    let listItems = [];
+
+    for (var i = 0; i < tilesData.length; i++) {
+      let newItem = this.generateListItem(tilesData[i], i)
+      listItems.push(newItem);
+    }
+
+    return listItems;
+  }
+
+  generateListItem(tile, counter) {
+    if (tile.title == this.props.selectedCrypto) {
+      return <li className="list-inline-item active" key={counter}>{tile.title}</li>;
+    } else {
+      return <li className="list-inline-item" key={counter}>{tile.title}</li>;
+    }
+  }
+
   render() {
     return (
         <ul className="list-inline tablist">
-            {tilesData.map((tile, i) => (
-              <li className="list-inline-item" key={i}>
-                {tile.title}
-              </li>
-            ))}
+            {this.getListItems()}
         </ul>
     )
   }
