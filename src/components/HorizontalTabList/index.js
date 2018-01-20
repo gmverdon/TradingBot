@@ -77,7 +77,7 @@ class HorizontalTabList extends Component {
   }
 
   generateListItem(tile, counter) {
-    if (tile.title == this.props.selectedCrypto) {
+    if (tile.title === this.props.selectedCrypto) {
       return <li className="list-inline-item active" key={counter}>{tile.title}</li>;
     } else {
       return <li className="list-inline-item" key={counter}>{tile.title}</li>;

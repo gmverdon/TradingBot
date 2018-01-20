@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './styles.css';
 
 // Bootstrap components
-import { Card, CardHeader, CardText, CardBody,
-  CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { Card, CardText, CardBody,
+  CardTitle, CardSubtitle } from 'reactstrap';
 
 class InfoPanel extends Component {
 
