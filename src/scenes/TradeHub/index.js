@@ -8,6 +8,7 @@ import binance from 'binance-api';
 import Header from '../../components/Header';
 import HorizontalTabList from '../../components/HorizontalTabList';
 import InfoPanel from '../../components/InfoPanel';
+import Chart from '../../components/Chart';
 
 class TradeHub extends Component {
   constructor(props) {
@@ -122,12 +123,18 @@ class TradeHub extends Component {
       <div>
         <Header />
 
-        <div class="container">
+        <div className="container">
           <HorizontalTabList selectedCrypto={this.state.selectedCrypto}/>
-          <div class="row">
-            <div class="col-sm"><InfoPanel title={"$ " + currentPrice} description={selectedCrypto + " current price"}/></div>
-            <div class="col-sm"><InfoPanel title={"$ " + highestPrice} description={selectedCrypto + " hightest price since bought"}/></div>
-            <div class="col-sm"><InfoPanel title={"$ " + sellPrice} description={selectedCrypto + " price to sell on"}/></div>
+          <div className="row">
+            <div className="col-sm"><InfoPanel title={"$ " + currentPrice} description={selectedCrypto + " current price"}/></div>
+            <div className="col-sm"><InfoPanel title={"$ " + highestPrice} description={selectedCrypto + " hightest price since bought"}/></div>
+            <div className="col-sm"><InfoPanel title={"$ " + sellPrice} description={selectedCrypto + " price to sell on"}/></div>
+          </div>
+        </div>
+
+        <div className="container mt-3">
+          <div className="row">
+            <div className="col-sm"><Chart /></div>
           </div>
         </div>
 
