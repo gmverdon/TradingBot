@@ -94,16 +94,6 @@ class TradeHub extends Component {
     })
   }
 
-  getCurrentPrice(symbol) {
-    let price = 0;
-
-    binance.prices((ticker) => {
-      price = ticker[symbol];
-    });
-
-    return price;
-  }
-
   checkPrice(currentPrice) {
     if (currentPrice > this.state.boughtPrice) {
       if (this.isHighestPrice(currentPrice)) {
@@ -163,16 +153,18 @@ class TradeHub extends Component {
   }
 
   changeSelectedCrypto(symbol) {
-    var result = this.state.cryptoList.filter(function(obj) {
-      return obj.symbol === symbol;
+    let crypto = this.state.cryptoList.find((obj) => { return obj.symbol === symbol; });
+    if (crypto == null) { return; }
+
+    binance.prices((ticker) => {
+      this.setState({
+        currentPrice: parseFloat(ticker[crypto.symbol])
+      })
     });
 
-    if (result != null && result.length > 0) {
-      this.setState({
-        selectedCrypto: result[0],
-        currentPrice: this.getCurrentPrice(result[0].symbol)
-      },() => { this.rebindSocket(); });
-    }
+    this.setState({
+      selectedCrypto: crypto
+    },() => { this.rebindSocket(); });
   }
 
   render() {
