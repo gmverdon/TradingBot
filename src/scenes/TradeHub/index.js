@@ -17,8 +17,8 @@ class TradeHub extends Component {
     this.state = {
       cryptoList: [],
       selectedCrypto: {symbol:"ETHBTC", baseAsset:"ETH", quoteAsset:"BTC"},
-      currentPrice: 14800,
-      boughtPrice: 14800,
+      currentPrice: 0.08,
+      boughtPrice: 0.07,
       diffPercentage: 0.01,
       highestPrice: 0,
       messages: [],
