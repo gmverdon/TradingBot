@@ -10,6 +10,11 @@
   margin-right: 0px;
 }
 
+.tablist .list-inline-item:hover {
+  background: #262b3e;
+  color: #fff;
+}
+
 .tablist > .active {
   z-index: 2;
   color: #fff;
