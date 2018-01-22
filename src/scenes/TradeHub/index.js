@@ -94,40 +94,40 @@ class TradeHub extends Component {
     })
   }
 
-  checkPrice(currentPrice) {
-    if (currentPrice > this.state.boughtPrice) {
-      if (this.isHighestPrice(currentPrice)) {
-        this.setHighestPrice(currentPrice);
+  checkPrice(price) {
+    if (price > this.state.boughtPrice) {
+      if (this.isHighestPrice(price)) {
+        this.setHighestPrice(price);
         return;
       }
 
-      if (this.shouldSell(currentPrice)) {
-        this.sell(currentPrice);
+      if (this.shouldSell(price)) {
+        this.sell(price);
         return;
       }
     }
   }
 
-  isHighestPrice(currentPrice) {
-    let isHighestPrice = currentPrice > this.state.highestPrice;
+  isHighestPrice(price) {
+    let isHighestPrice = price > this.state.highestPrice;
     return isHighestPrice;
   }
 
-  setHighestPrice(currentPrice) {
+  setHighestPrice(price) {
     this.setState({
-      highestPrice: currentPrice
+      highestPrice: price
     })
   }
 
-  shouldSell(currentPrice) {
+  shouldSell(price) {
     if (this.state.sellEnabled && !this.state.hasSold) {
-      let shouldSell = (currentPrice <= (this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage));
+      let shouldSell = (price <= (this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage));
       return shouldSell;
     }
   }
 
-  sell(currentPrice) {
-    alert("SOLD at " + currentPrice);
+  sell(price) {
+    alert("SOLD at " + price);
     this.setState({
       hasSold: true
     })
