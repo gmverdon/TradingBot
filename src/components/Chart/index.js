@@ -9,7 +9,7 @@ import TradingViewWidget from 'react-tradingview-widget';
 
 class Chart extends Component {
   render() {
-    let symbol = "BINANCE:" + this.props.selectedCrypto.symbol;
+    const symbol = "BINANCE:" + this.props.selectedCrypto.symbol;
     return (
       <Card id="chart">
         <TradingViewWidget

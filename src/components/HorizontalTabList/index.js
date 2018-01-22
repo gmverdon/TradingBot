@@ -7,8 +7,8 @@ class HorizontalTabList extends Component {
     let list = this.props.list;
     let listItems = [];
 
-    for (var i = 0; i < list.length; i++) {
-      let newItem = this.generateListItem(list[i].symbol, i)
+    for (let i = 0; i < list.length; i++) {
+      const newItem = this.generateListItem(list[i].symbol, i);
       listItems.push(newItem);
     }
 
