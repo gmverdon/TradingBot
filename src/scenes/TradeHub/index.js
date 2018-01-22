@@ -81,7 +81,7 @@ class TradeHub extends Component {
 
       if (cryptoList.length > 0) {
         this.setState({
-          cryptoList: cryptoList,
+          cryptoList,
           selectedCrypto: cryptoList[0]
         });
       }
