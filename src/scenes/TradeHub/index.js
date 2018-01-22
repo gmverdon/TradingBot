@@ -151,8 +151,10 @@ class TradeHub extends Component {
     if (crypto === null) return;
 
     binance.prices((ticker) => {
+      const currentPrice = parseFloat(ticker[crypto.symbol]);
       this.setState({
-        currentPrice: parseFloat(ticker[crypto.symbol])
+        currentPrice: currentPrice,
+        highestPrice: currentPrice
       })
     });
 
