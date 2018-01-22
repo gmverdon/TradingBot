@@ -8,9 +8,6 @@ import { Card } from 'reactstrap';
 import TradingViewWidget from 'react-tradingview-widget';
 
 class Chart extends Component {
-
-  shouldComponentUpdate = (nextProps) => this.props.selectedCrypto !== nextProps.selectedCrypto
-
   render() {
     let symbol = "BINANCE:" + this.props.selectedCrypto.symbol;
     return (
