@@ -1,25 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './styles.css';
 
-// Bootstrap components
+// Libraries
 import { Card, CardText, CardBody,
   CardTitle, CardSubtitle } from 'reactstrap';
 
-class InfoPanel extends Component {
-
-  render() {
-    return (
-      <div>
-        <Card>
-          <CardBody>
-            <CardTitle>{this.props.title}</CardTitle>
-            <CardSubtitle>{this.props.subtitle}</CardSubtitle>
-            <CardText>{this.props.description}</CardText>
-          </CardBody>
-        </Card>
-      </div>
-    )
-  }
-}
+const InfoPanel = ({title, subtitle, description}) => (
+  <Card>
+    <CardBody>
+      <CardTitle>{title}</CardTitle>
+      <CardSubtitle>{subtitle}</CardSubtitle>
+      <CardText>{description}</CardText>
+    </CardBody>
+  </Card>
+);
 
 export default InfoPanel;
