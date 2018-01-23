@@ -9,6 +9,7 @@ import Header from '../../components/Header';
 import HorizontalTabList from '../../components/HorizontalTabList';
 import InfoPanel from '../../components/InfoPanel';
 import InputPanel from '../../components/InputPanel';
+import OptionPanel from '../../components/OptionPanel';
 import Chart from '../../components/Chart';
 
 class TradeHub extends Component {
@@ -37,7 +38,7 @@ class TradeHub extends Component {
     // bindings
     this.setBoughtPrice = this.setBoughtPrice.bind(this);
     this.setDiffPercentage = this.setDiffPercentage.bind(this);
-    this.toggleSellEnabled = this.toggleSellEnabled.bind(this);
+    this.setSellEnabled = this.setSellEnabled.bind(this);
     this.changeSelectedCrypto = this.changeSelectedCrypto.bind(this);
   }
 
@@ -135,9 +136,9 @@ class TradeHub extends Component {
     });
   }
 
-  toggleSellEnabled() {
+  setSellEnabled(value) {
     this.setState({
-      sellEnabled: !this.state.sellEnabled
+      sellEnabled: value
     });
   }
 
@@ -209,14 +210,10 @@ class TradeHub extends Component {
             </div>
 
             <div className="col-sm">
-              <InputPanel
-                name="bought_price"
-                value={boughtPrice}
-                step="0.01"
-                onChange={this.setBoughtPrice}
-                title="Bought"
-                description={"Price at which you bought " + selectedCrypto.quoteAsset}
-                placeholder="Bought price"/>
+              <OptionPanel
+                onChange={this.setSellEnabled}
+                title="Bot enabled"
+                description={"If the bot should sell at " + sellPrice} />
             </div>
           </div>
         </div>
@@ -225,19 +222,6 @@ class TradeHub extends Component {
           <hr/>
           <p>(only when the price is higher then the boughtPrice). <br/>
             Difference between highestprice and sell price is {(this.state.diffPercentage * 100).toFixed(2)}%</p>
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Difference between highestprice and sell price."
-              onChange={this.setDiffPercentage}
-              value={(this.state.diffPercentage * 100).toFixed(2)}/>
-          <hr/>
-          <p>Can sell (if enabled, the bot will sell at {(this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage)})</p>
-          <input
-            type="checkbox"
-            onChange={this.toggleSellEnabled}
-            checked={this.state.sellEnabled}/>
-          <hr/>
           <h1>Sold: {this.state.hasSold.toString()}</h1>
         </div>
       </div>

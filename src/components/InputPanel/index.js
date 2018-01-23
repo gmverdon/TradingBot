@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import './styles.css';
 
 // Libraries
-import { Card, CardBody, CardTitle, CardText,
-  Button, FormGroup, Input, InputGroup, InputGroupAddon } from 'reactstrap';
+import { Card, CardBody, CardTitle, CardText, Button, Input } from 'reactstrap';
 
 class InputPanel extends Component {
   state = {
