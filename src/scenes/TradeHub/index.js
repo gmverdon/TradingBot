@@ -3,6 +3,7 @@ import './styles.css';
 
 // Libraries
 import binance from 'binance-api';
+import { Container, Row, Col } from 'reactstrap';
 
 // Components
 import Header from '../../components/Header';
@@ -183,24 +184,24 @@ class TradeHub extends Component {
       <div>
         <Header />
 
-        <div className="container">
+        <Container>
           <HorizontalTabList list={cryptoList} selectedItem={this.state.selectedCrypto} changeSelected={this.changeSelectedCrypto}/>
-          <div className="row">
-            <div className="col-sm"><InfoPanel title={selectedCrypto.quoteAsset + " " + currentPrice} description={selectedCrypto.baseAsset + " current price"}/></div>
-            <div className="col-sm"><InfoPanel title={selectedCrypto.quoteAsset + " "  + highestPrice} description={selectedCrypto.baseAsset + " hightest price since bought"}/></div>
-            <div className="col-sm"><InfoPanel title={selectedCrypto.quoteAsset + " "  + sellPrice} description={selectedCrypto.baseAsset + " price to sell on"}/></div>
-          </div>
-        </div>
+          <Row>
+            <Col><InfoPanel title={selectedCrypto.quoteAsset + " " + currentPrice} description={selectedCrypto.baseAsset + " current price"}/></Col>
+            <Col><InfoPanel title={selectedCrypto.quoteAsset + " "  + highestPrice} description={selectedCrypto.baseAsset + " hightest price since bought"}/></Col>
+            <Col><InfoPanel title={selectedCrypto.quoteAsset + " "  + sellPrice} description={selectedCrypto.baseAsset + " price to sell on"}/></Col>
+          </Row>
+        </Container>
 
-        <div className="container mt-3">
-          <div className="row">
-            <div className="col-sm"><Chart selectedCrypto={this.state.selectedCrypto} /></div>
-          </div>
-        </div>
+        <Container className="mt-3">
+          <Row>
+            <Col><Chart selectedCrypto={this.state.selectedCrypto} /></Col>
+          </Row>
+        </Container>
 
-        <div className="container mt-3">
-          <div className="row">
-            <div className="col-sm">
+        <Container className="mt-3">
+          <Row>
+            <Col>
               <InputPanel
                 name="bought_price"
                 value={boughtPrice}
@@ -209,9 +210,9 @@ class TradeHub extends Component {
                 title="Bought"
                 description={"Price in " + selectedCrypto.quoteAsset + " at which you bought " + selectedCrypto.baseAsset}
                 placeholder="Bought price"/>
-            </div>
+            </Col>
 
-            <div className="col-sm">
+            <Col>
               <InputPanel
                 name="diffpercentage"
                 value={diffPercentage}
@@ -220,18 +221,18 @@ class TradeHub extends Component {
                 title="Difference"
                 description={"% between highestprice and sell price."}
                 placeholder="Difference %"/>
-            </div>
+            </Col>
 
-            <div className="col-sm">
+            <Col>
               <OptionPanel
                 options={sellOptions}
                 value={sellEnabled}
                 onChange={this.setSellEnabled}
                 title="Should sell"
                 description={"If the bot should sell at " + sellPrice} />
-            </div>
-          </div>
-        </div>
+            </Col>
+          </Row>
+        </Container>
 
         <div>
           <hr/>
