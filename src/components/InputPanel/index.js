@@ -1,22 +1,43 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './styles.css';
 
 // Libraries
 import { Card, CardBody, CardTitle, CardText,
   Button, FormGroup, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
+class InputPanel extends Component {
+  state = {
+    value: 0,
+    disabled: false
+  }
 
-const InputPanel = ({onChange, value, name, step, title, description, placeholder}) => (
-  <Card>
-    <CardBody>
-      <CardTitle>{title}</CardTitle>
-      <CardText>{description}</CardText>
-      <div className="horizontalGroup">
-        <Input step={step} onChange={onChange} value={value} type="number" name={name} placeholder={placeholder} />
-        <Button className="ml-3" color="primary">Submit</Button>
-      </div>
-    </CardBody>
-  </Card>
-);
+  handleChange = (e) => {
+    this.setState({
+      value: e.target.value,
+      disabled: false,
+    });
+  }
+
+  handleClick = () => {
+    this.props.onChange(this.state.value);
+    this.setState({disabled: true})
+  }
+
+  render() {
+    const {onChange, name, step, title, description, placeholder} = this.props;
+    return (
+      <Card>
+        <CardBody>
+          <CardTitle>{title}</CardTitle>
+          <CardText>{description}</CardText>
+          <div className="horizontalGroup">
+            <Input onChange={this.handleChange} step={step} value={this.state.value} type="number" name={name} placeholder={placeholder} />
+            <Button disabled={this.state.disabled} onClick={this.handleClick} className="ml-3" color="primary">Submit</Button>
+          </div>
+        </CardBody>
+      </Card>
+    )
+  }
+};
 
 export default InputPanel;
