@@ -160,7 +160,7 @@ class TradeHub extends Component {
   }
 
   render() {
-    const { selectedCrypto, cryptoList, boughtPrice } = this.state;
+    const {sellEnabled, selectedCrypto, cryptoList, boughtPrice } = this.state;
     const diffPercentage = this.state.diffPercentage * 100;
     const currentPrice = this.state.currentPrice.toFixed(6);
     const highestPrice = this.state.highestPrice.toFixed(6);
@@ -211,8 +211,9 @@ class TradeHub extends Component {
 
             <div className="col-sm">
               <OptionPanel
+                value={sellEnabled}
                 onChange={this.setSellEnabled}
-                title="Bot enabled"
+                title="Should sell"
                 description={"If the bot should sell at " + sellPrice} />
             </div>
           </div>

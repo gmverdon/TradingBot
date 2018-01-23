@@ -28,7 +28,10 @@ class OptionPanel extends PureComponent {
   }
 
   generateButton(label, value, color, counter) {
-    return <Button key={counter} color={color} onClick={() => this.handleClick(value)}>{label}</Button>
+    if (value === this.props.value) {
+      return <Button key={counter} color={color} onClick={() => this.handleClick(value)}>{label}</Button>
+    }
+    return <Button key={counter} color="secondary" onClick={() => this.handleClick(value)}>{label}</Button>
   }
 
   handleClick = (value) => {
