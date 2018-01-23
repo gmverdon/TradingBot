@@ -110,8 +110,7 @@ class TradeHub extends Component {
   shouldSell(price) {
     const { sellEnabled, hasSold, highestPrice, diffPercentage } = this.state;
     if (sellEnabled && !hasSold) {
-      const shouldSell = (price <= (highestPrice - highestPrice * diffPercentage));
-      return shouldSell;
+      return price <= highestPrice - highestPrice * diffPercentage;
     }
   }
 
