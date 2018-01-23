@@ -7,7 +7,7 @@ import { Card, CardBody, CardTitle, CardText, Button, Input } from 'reactstrap';
 class InputPanel extends Component {
   state = {
     value: 0,
-    disabled: false
+    disabled: true
   }
 
   handleChange = (e) => {
