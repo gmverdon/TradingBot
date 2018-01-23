@@ -31,7 +31,7 @@ class TradeHub extends Component {
       'APIKEY':      props.opts.binance.key,
       'APISECRET':   props.opts.binance.secret,
       'reconnect': false
-    })
+    });
 
     // bindings
     this.setBoughtPrice = this.setBoughtPrice.bind(this);
@@ -67,7 +67,7 @@ class TradeHub extends Component {
       const { c:close } = ticks;
       const currentPrice = parseFloat(close);
 
-      this.setState({ currentPrice })
+      this.setState({currentPrice});
       this.checkPrice(currentPrice);
     });
   }
@@ -81,7 +81,7 @@ class TradeHub extends Component {
           selectedCrypto: cryptoList[0]
         });
       }
-    })
+    });
   }
 
   checkPrice(price) {
@@ -98,13 +98,13 @@ class TradeHub extends Component {
   }
 
   isHighestPrice(price) {
-    return price > this.state.highestPrice;;
+    return price > this.state.highestPrice;
   }
 
   setHighestPrice(price) {
     this.setState({
       highestPrice: price
-    })
+    });
   }
 
   shouldSell(price) {
@@ -118,26 +118,26 @@ class TradeHub extends Component {
     alert("SOLD at: " + price);
     this.setState({
       hasSold: true
-    })
+    });
   }
 
   setBoughtPrice(e) {
     this.setState({
       boughtPrice: e.target.value
-    })
+    });
   }
 
   setDiffPercentage(e) {
-    const diffPercentage = (e.target.value / 100);
+    const diffPercentage = e.target.value / 100;
     this.setState({
       diffPercentage
-    })
+    });
   }
 
   toggleSellEnabled() {
     this.setState({
       sellEnabled: !this.state.sellEnabled
-    })
+    });
   }
 
   changeSelectedCrypto(symbol) {
@@ -149,7 +149,7 @@ class TradeHub extends Component {
       this.setState({
         currentPrice,
         highestPrice: currentPrice
-      })
+      });
     });
 
     this.setState({
@@ -160,7 +160,7 @@ class TradeHub extends Component {
   render() {
     const selectedCrypto = this.state.selectedCrypto;
     const currentPrice = this.state.currentPrice.toFixed(6);
-    const highestPrice = this.state.highestPrice.toFixed(6);;
+    const highestPrice = this.state.highestPrice.toFixed(6);
     const sellPrice = (highestPrice - highestPrice * this.state.diffPercentage).toFixed(6);
     const cryptoList = this.state.cryptoList;
 
