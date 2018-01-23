@@ -122,14 +122,14 @@ class TradeHub extends Component {
     });
   }
 
-  setBoughtPrice(e) {
+  setBoughtPrice(price) {
     this.setState({
-      boughtPrice: e.target.value
+      boughtPrice: price
     });
   }
 
-  setDiffPercentage(e) {
-    const diffPercentage = e.target.value / 100;
+  setDiffPercentage(percentage) {
+    const diffPercentage = percentage / 100;
     this.setState({
       diffPercentage
     });
@@ -193,7 +193,7 @@ class TradeHub extends Component {
                 step="0.01"
                 onChange={this.setBoughtPrice}
                 title="Bought"
-                description={"Price at which you bought " + selectedCrypto.quoteAsset}
+                description={"Price in " + selectedCrypto.quoteAsset + " at which you bought " + selectedCrypto.baseAsset}
                 placeholder="Bought price"/>
             </div>
 
