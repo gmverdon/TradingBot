@@ -8,126 +8,178 @@ import binance from 'binance-api';
 import Header from '../../components/Header';
 import HorizontalTabList from '../../components/HorizontalTabList';
 import InfoPanel from '../../components/InfoPanel';
+import Chart from '../../components/Chart';
 
 class TradeHub extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedCrypto: "Bitcoin",
-      currentPrice: 14800,
-      boughtPrice: 14800,
+      cryptoList: [],
+      selectedCrypto: {symbol:"ETHBTC", baseAsset:"ETH", quoteAsset:"BTC"},
+      currentPrice: 0,
+      boughtPrice: 0,
       diffPercentage: 0.01,
       highestPrice: 0,
       messages: [],
       sellEnabled: false,
-      hasSold: false
+      hasSold: false,
+      socketKeys: ["ETHBTC@kline_1m"]
     }
 
     binance.options({
       'APIKEY':      props.opts.binance.key,
       'APISECRET':   props.opts.binance.secret,
-      'recvWindow': 60000
-    })
+      'reconnect': false
+    });
 
     // bindings
     this.setBoughtPrice = this.setBoughtPrice.bind(this);
     this.setDiffPercentage = this.setDiffPercentage.bind(this);
     this.toggleSellEnabled = this.toggleSellEnabled.bind(this);
+    this.changeSelectedCrypto = this.changeSelectedCrypto.bind(this);
   }
 
   componentDidMount() {
-    var self = this;
-    binance.websockets.candlesticks(['BTCUSDT'], "1m", function(candlesticks) {
-      let { e:eventType, E:eventTime, s:symbol, k:ticks } = candlesticks;
-      let { o:open, h:high, l:low, c:close, v:volume, n:trades, i:interval, x:isFinal, q:quoteVolume, V:buyVolume, Q:quoteBuyVolume } = ticks;
-      //console.log(symbol+" "+interval+" candlestick update");
-      let currentPrice = parseFloat(close);
+    this.getCryptoList();
+    this.bindSocket(this.state.selectedCrypto.symbol);
+  }
 
-      self.setState({
-        currentPrice: currentPrice
-      })
-      self.checkPrice(currentPrice);
+  rebindSocket() {
+    const newCrypto = this.state.selectedCrypto.symbol;
+    const newEndpoint = newCrypto.toLowerCase() + "@kline_1m";
+    const subscriptions = binance.websockets.subscriptions();
+
+    for (let endpoint in subscriptions) {
+      if (endpoint !== newEndpoint) { this.removeSocket(endpoint); }
+    }
+
+    this.bindSocket(newCrypto);
+  }
+
+  removeSocket(endpoint) {
+    binance.websockets.terminate(endpoint);
+  }
+
+  bindSocket = (symbol) => {
+    binance.websockets.candlesticks([symbol], "1m", (candlesticks) => {
+      const { k:ticks } = candlesticks;
+      const { c:close } = ticks;
+      const currentPrice = parseFloat(close);
+
+      this.setState({currentPrice});
+      this.checkPrice(currentPrice);
     });
   }
 
-  checkPrice(currentPrice) {
-    if (currentPrice > this.state.boughtPrice) {
-      if (this.isHighestPrice(currentPrice)) {
-        this.setHighestPrice(currentPrice);
+  getCryptoList() {
+    fetch('https://api.binance.com/api/v1/exchangeInfo').then(res => res.json()).then((data) => {
+      const cryptoList = data.symbols;
+      if (cryptoList.length > 0) {
+        this.setState({
+          cryptoList,
+          selectedCrypto: cryptoList[0]
+        });
+      }
+    });
+  }
+
+  checkPrice(price) {
+    if (price > this.state.boughtPrice) {
+      if (this.isHighestPrice(price)) {
+        this.setHighestPrice(price);
         return;
       }
 
-      if (this.shouldSell(currentPrice)) {
-        this.sell(currentPrice);
-        return;
+      if (this.shouldSell(price)) {
+        this.sell(price);
       }
     }
   }
 
-  isHighestPrice(currentPrice) {
-    let isHighestPrice = currentPrice > this.state.highestPrice;
-    return isHighestPrice;
+  isHighestPrice(price) {
+    return price > this.state.highestPrice;
   }
 
-  setHighestPrice(currentPrice) {
-    console.log("Previous highestPrice: " + this.state.highestPrice);
+  setHighestPrice(price) {
     this.setState({
-      highestPrice: currentPrice
-    })
-    console.log("New highestPrice: " + this.state.highestPrice)
+      highestPrice: price
+    });
   }
 
-  shouldSell(currentPrice) {
-    if (this.state.sellEnabled && !this.state.hasSold) {
-      let shouldSell = (currentPrice <= (this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage));
-      return shouldSell;
+  shouldSell(price) {
+    const { sellEnabled, hasSold, highestPrice, diffPercentage } = this.state;
+    if (sellEnabled && !hasSold) {
+      return price <= highestPrice - highestPrice * diffPercentage;
     }
   }
 
-  sell(currentPrice) {
-    alert("SOLD at " + currentPrice);
-    console.log("SOLD at " + currentPrice);
+  sell(price) {
+    alert("SOLD at: " + price);
     this.setState({
       hasSold: true
-    })
+    });
   }
 
   setBoughtPrice(e) {
     this.setState({
       boughtPrice: e.target.value
-    })
+    });
   }
 
   setDiffPercentage(e) {
-    let diffPercentage = (e.target.value / 100);
+    const diffPercentage = e.target.value / 100;
     this.setState({
-      diffPercentage: diffPercentage
-    })
+      diffPercentage
+    });
   }
 
   toggleSellEnabled() {
     this.setState({
       sellEnabled: !this.state.sellEnabled
-    })
+    });
+  }
+
+  changeSelectedCrypto(symbol) {
+    const crypto = this.state.cryptoList.find(obj => obj.symbol === symbol);
+    if (crypto === null) return;
+
+    binance.prices((ticker) => {
+      const currentPrice = parseFloat(ticker[crypto.symbol]);
+      this.setState({
+        currentPrice,
+        highestPrice: currentPrice
+      });
+    });
+
+    this.setState({
+      selectedCrypto: crypto
+    },() => this.rebindSocket());
   }
 
   render() {
-    let selectedCrypto = this.state.selectedCrypto;
-    let currentPrice = this.state.currentPrice.toFixed(2);
-    let highestPrice = this.state.highestPrice.toFixed(2);;
-    let sellPrice = (highestPrice - highestPrice * this.state.diffPercentage).toFixed(2);
+    const selectedCrypto = this.state.selectedCrypto;
+    const currentPrice = this.state.currentPrice.toFixed(6);
+    const highestPrice = this.state.highestPrice.toFixed(6);
+    const sellPrice = (highestPrice - highestPrice * this.state.diffPercentage).toFixed(6);
+    const cryptoList = this.state.cryptoList;
 
     return (
       <div>
         <Header />
 
-        <div class="container">
-          <HorizontalTabList selectedCrypto={this.state.selectedCrypto}/>
-          <div class="row">
-            <div class="col-sm"><InfoPanel title={"$ " + currentPrice} description={selectedCrypto + " current price"}/></div>
-            <div class="col-sm"><InfoPanel title={"$ " + highestPrice} description={selectedCrypto + " hightest price since bought"}/></div>
-            <div class="col-sm"><InfoPanel title={"$ " + sellPrice} description={selectedCrypto + " price to sell on"}/></div>
+        <div className="container">
+          <HorizontalTabList list={cryptoList} selectedItem={this.state.selectedCrypto} changeSelected={this.changeSelectedCrypto}/>
+          <div className="row">
+            <div className="col-sm"><InfoPanel title={selectedCrypto.quoteAsset + " " + currentPrice} description={selectedCrypto.baseAsset + " current price"}/></div>
+            <div className="col-sm"><InfoPanel title={selectedCrypto.quoteAsset + " "  + highestPrice} description={selectedCrypto.baseAsset + " hightest price since bought"}/></div>
+            <div className="col-sm"><InfoPanel title={selectedCrypto.quoteAsset + " "  + sellPrice} description={selectedCrypto.baseAsset + " price to sell on"}/></div>
+          </div>
+        </div>
+
+        <div className="container mt-3">
+          <div className="row">
+            <div className="col-sm"><Chart selectedCrypto={this.state.selectedCrypto} /></div>
           </div>
         </div>
 

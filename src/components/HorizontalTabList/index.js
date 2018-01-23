@@ -1,94 +1,37 @@
 import React, {Component} from 'react';
 import './styles.css';
 
-const tilesData = [
-  {
-    title: 'Ethereum',
-  },
-  {
-    title: 'Bitcoin',
-  },
-  {
-    title: 'Ripple',
-  },
-  {
-    title: 'Request Network',
-  },
-  {
-    title: 'Substratum',
-  },
-  {
-    title: 'Ethereum Classic',
-  },
-  {
-    title: 'IOTA',
-  },
-  {
-    title: 'Bitconnect',
-  },
-  {
-    title: 'Basic Attention Token',
-  },
-  {
-    title: 'Stellar',
-  },
-  {
-    title: 'NEO',
-  },
-  {
-    title: 'Litecoin',
-  },
-  {
-    title: 'Cardano',
-  },
-  {
-    title: 'TRON',
-  },
-  {
-    title: 'Monero',
-  },
-  {
-    title: 'ICON',
-  },
-  {
-    title: 'Qtum',
-  },
-  {
-    title: 'Lisk',
-  },
-  {
-    title: 'Binance Coin',
-  },
-  {
-    title: 'VeChain',
-  }
-];
-
 class HorizontalTabList extends Component {
-  getListItems() {
-    let listItems = [];
 
-    for (var i = 0; i < tilesData.length; i++) {
-      let newItem = this.generateListItem(tilesData[i], i)
+  getListItems() {
+    const list = this.props.list;
+    const listItems = [];
+
+    for (let i = 0; i < list.length; i++) {
+      const newItem = this.generateListItem(list[i].symbol, i);
       listItems.push(newItem);
     }
 
     return listItems;
   }
 
-  generateListItem(tile, counter) {
-    if (tile.title == this.props.selectedCrypto) {
-      return <li className="list-inline-item active" key={counter}>{tile.title}</li>;
+  generateListItem(title, counter) {
+    if (title === this.props.selectedItem.symbol) {
+      return <li className="list-inline-item active" key={counter}>{title}</li>;
     } else {
-      return <li className="list-inline-item" key={counter}>{tile.title}</li>;
+      return <li className="list-inline-item" key={counter} onClick={() => this.changeSelectedItem(title)}>{title}</li>;
     }
+  }
+
+  changeSelectedItem(title) {
+    this.props.changeSelected(title);
   }
 
   render() {
     return (
-        <ul className="list-inline tablist">
-            {this.getListItems()}
-        </ul>
+      <ul className="list-inline tablist">
+        {this.getListItems()}
+      </ul>
     )
   }
 

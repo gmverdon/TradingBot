@@ -3,8 +3,7 @@ import React, {Component} from 'react'
 // Libraries
 import {
   BrowserRouter as Router,
-  Route,
-  Link
+  Route
 } from 'react-router-dom'
 
 // Components
