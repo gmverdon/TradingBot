@@ -8,6 +8,7 @@ import binance from 'binance-api';
 import Header from '../../components/Header';
 import HorizontalTabList from '../../components/HorizontalTabList';
 import InfoPanel from '../../components/InfoPanel';
+import InputPanel from '../../components/InputPanel';
 import Chart from '../../components/Chart';
 
 class TradeHub extends Component {
@@ -158,11 +159,11 @@ class TradeHub extends Component {
   }
 
   render() {
-    const selectedCrypto = this.state.selectedCrypto;
+    const { selectedCrypto, cryptoList, boughtPrice } = this.state;
+    const diffPercentage = this.state.diffPercentage * 100;
     const currentPrice = this.state.currentPrice.toFixed(6);
     const highestPrice = this.state.highestPrice.toFixed(6);
     const sellPrice = (highestPrice - highestPrice * this.state.diffPercentage).toFixed(6);
-    const cryptoList = this.state.cryptoList;
 
     return (
       <div>
@@ -183,20 +184,45 @@ class TradeHub extends Component {
           </div>
         </div>
 
+        <div className="container mt-3">
+          <div className="row">
+            <div className="col-sm">
+              <InputPanel
+                name="bought_price"
+                value={boughtPrice}
+                step="0.01"
+                onChange={this.setBoughtPrice}
+                title="Bought"
+                description={"Price at which you bought " + selectedCrypto.quoteAsset}
+                placeholder="Bought price"/>
+            </div>
+
+            <div className="col-sm">
+              <InputPanel
+                name="diffpercentage"
+                value={diffPercentage}
+                step="0.01"
+                onChange={this.setDiffPercentage}
+                title="Difference"
+                description={"% between highestprice and sell price."}
+                placeholder="Difference %"/>
+            </div>
+
+            <div className="col-sm">
+              <InputPanel
+                name="bought_price"
+                value={boughtPrice}
+                step="0.01"
+                onChange={this.setBoughtPrice}
+                title="Bought"
+                description={"Price at which you bought " + selectedCrypto.quoteAsset}
+                placeholder="Bought price"/>
+            </div>
+          </div>
+        </div>
+
         <div>
-          <h1>Current price: {this.state.currentPrice}</h1>
           <hr/>
-          <h1>Bought at this price:</h1>
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Price at which you bought."
-            onChange={this.setBoughtPrice}
-            value={this.state.boughtPrice}/>
-          <hr/>
-          <h1>Highest price since bought: {this.state.highestPrice}</h1>
-          <hr/>
-          <h1>Will sell at: {(this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage)} </h1>
           <p>(only when the price is higher then the boughtPrice). <br/>
             Difference between highestprice and sell price is {(this.state.diffPercentage * 100).toFixed(2)}%</p>
             <input
