@@ -166,6 +166,19 @@ class TradeHub extends Component {
     const highestPrice = this.state.highestPrice.toFixed(6);
     const sellPrice = (highestPrice - highestPrice * this.state.diffPercentage).toFixed(6);
 
+    const sellOptions = [
+      {
+        label: "Enable",
+        value: true,
+        color: "success"
+      },
+      {
+        label: "Disable",
+        value: false,
+        color: "danger"
+      }
+    ]
+
     return (
       <div>
         <Header />
@@ -211,6 +224,7 @@ class TradeHub extends Component {
 
             <div className="col-sm">
               <OptionPanel
+                options={sellOptions}
                 value={sellEnabled}
                 onChange={this.setSellEnabled}
                 title="Should sell"

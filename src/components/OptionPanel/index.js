@@ -4,26 +4,16 @@ import './styles.css';
 // Libraries
 import { Card, CardBody, CardTitle, CardText, Button, ButtonGroup } from 'reactstrap';
 
-const options = [
-  {
-    label: "Enable",
-    value: true,
-    color: "success"
-  },
-  {
-    label: "Disable",
-    value: false,
-    color: "danger"
-  }
-]
-
 class OptionPanel extends PureComponent {
 
   getButtons = () => {
     const buttonList = [];
+    const options = this.props.options;
+
     for (var i = 0; i < options.length; i++) {
       buttonList.push(this.generateButton(options[i].label, options[i].value, options[i].color, i));
     }
+
     return buttonList;
   }
 
