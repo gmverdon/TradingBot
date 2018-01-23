@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
 import './styles.css';
 
-// Bootstrap components
-import { Card } from 'reactstrap';
-
 // libraries
+import { Card } from 'reactstrap';
 import TradingViewWidget from 'react-tradingview-widget';
 
-class Chart extends Component {
-  render() {
-    const symbol = "BINANCE:" + this.props.selectedCrypto.symbol;
-    return (
-      <Card id="chart">
-        <TradingViewWidget
-          symbol={symbol}
-          autosize
-        />
-      </Card>
-    );
-  }
-}
+const Chart = ({selectedCrypto}) => (
+  <Card id="chart">
+    <TradingViewWidget
+      symbol={"BINANCE:" + selectedCrypto.symbol}
+      autosize
+    />
+  </Card>
+);
 
 export default Chart;
