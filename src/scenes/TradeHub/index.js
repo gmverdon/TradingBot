@@ -73,12 +73,8 @@ class TradeHub extends Component {
   }
 
   getCryptoList() {
-    fetch("https://api.binance.com/api/v1/exchangeInfo").then(res => res.json()).then((data) => {
-      const cryptoList = [];
-      for (let i = 0; i < data.symbols.length; i++) {
-          cryptoList.push(data.symbols[i]);
-      }
-
+    fetch('https://api.binance.com/api/v1/exchangeInfo').then(res => res.json()).then((data) => {
+      const cryptoList = data.symbols;
       if (cryptoList.length > 0) {
         this.setState({
           cryptoList,
@@ -97,14 +93,12 @@ class TradeHub extends Component {
 
       if (this.shouldSell(price)) {
         this.sell(price);
-        return;
       }
     }
   }
 
   isHighestPrice(price) {
-    const isHighestPrice = price > this.state.highestPrice;
-    return isHighestPrice;
+    return price > this.state.highestPrice;;
   }
 
   setHighestPrice(price) {
@@ -114,14 +108,15 @@ class TradeHub extends Component {
   }
 
   shouldSell(price) {
-    if (this.state.sellEnabled && !this.state.hasSold) {
-      const shouldSell = (price <= (this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage));
+    const { sellEnabled, hasSold, highestPrice, diffPercentage } = this.state;
+    if (sellEnabled && !hasSold) {
+      const shouldSell = (price <= (highestPrice - highestPrice * diffPercentage));
       return shouldSell;
     }
   }
 
   sell(price) {
-    alert("SOLD at " + price);
+    alert("SOLD at: " + price);
     this.setState({
       hasSold: true
     })
@@ -136,7 +131,7 @@ class TradeHub extends Component {
   setDiffPercentage(e) {
     const diffPercentage = (e.target.value / 100);
     this.setState({
-      diffPercentage: diffPercentage
+      diffPercentage
     })
   }
 
@@ -147,13 +142,13 @@ class TradeHub extends Component {
   }
 
   changeSelectedCrypto(symbol) {
-    const crypto = this.state.cryptoList.find((obj) => { return obj.symbol === symbol; });
+    const crypto = this.state.cryptoList.find(obj => obj.symbol === symbol);
     if (crypto === null) return;
 
     binance.prices((ticker) => {
       const currentPrice = parseFloat(ticker[crypto.symbol]);
       this.setState({
-        currentPrice: currentPrice,
+        currentPrice,
         highestPrice: currentPrice
       })
     });

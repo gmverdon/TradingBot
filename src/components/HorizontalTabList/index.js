@@ -4,8 +4,8 @@ import './styles.css';
 class HorizontalTabList extends Component {
 
   getListItems() {
-    let list = this.props.list;
-    let listItems = [];
+    const list = this.props.list;
+    const listItems = [];
 
     for (let i = 0; i < list.length; i++) {
       const newItem = this.generateListItem(list[i].symbol, i);
@@ -29,9 +29,9 @@ class HorizontalTabList extends Component {
 
   render() {
     return (
-        <ul className="list-inline tablist">
-            {this.getListItems()}
-        </ul>
+      <ul className="list-inline tablist">
+        {this.getListItems()}
+      </ul>
     )
   }
 
