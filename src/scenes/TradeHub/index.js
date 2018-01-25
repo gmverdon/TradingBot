@@ -26,8 +26,11 @@ class TradeHub extends Component {
     sellEnabled: false,
     hasSold: false,
     socketKeys: ["ETHBTC@kline_1m"]
-  }
+  };
 
+  /**
+   * Make component ready
+   */
   componentDidMount = () => {
     binance.options({
       'APIKEY':      this.props.opts.binance.key,
@@ -39,6 +42,9 @@ class TradeHub extends Component {
     this.bindSocket(this.state.selectedCrypto.symbol);
   }
 
+  /**
+   * Remove old sockets and bind new ones
+   */
   rebindSocket = () => {
     const newCrypto = this.state.selectedCrypto.symbol;
     const newEndpoint = newCrypto.toLowerCase() + "@kline_1m";
@@ -51,10 +57,9 @@ class TradeHub extends Component {
     this.bindSocket(newCrypto);
   }
 
-  removeSocket = (endpoint) => {
-    binance.websockets.terminate(endpoint);
-  }
-
+  /**
+   * Bind a websocket to a new trading symbol
+   */
   bindSocket = (symbol) => {
     binance.websockets.candlesticks([symbol], "1m", (candlesticks) => {
       const { k:ticks } = candlesticks;
@@ -66,6 +71,14 @@ class TradeHub extends Component {
     });
   }
 
+  /**
+   *  Remove a websocket to a trading symbol
+   */
+  removeSocket = (endpoint) => binance.websockets.terminate(endpoint);
+
+  /**
+   * Get all active trading symbols
+   */
   getCryptoList = () => {
     fetch('https://api.binance.com/api/v1/exchangeInfo').then(res => res.json()).then((data) => {
       const cryptoList = data.symbols;
@@ -78,62 +91,9 @@ class TradeHub extends Component {
     });
   }
 
-  checkPrice = (price) => {
-    if (price > this.state.boughtPrice) {
-      if (this.isHighestPrice(price)) {
-        this.setHighestPrice(price);
-        return;
-      }
-
-      if (this.shouldSell(price)) {
-        this.sell(price);
-      }
-    }
-  }
-
-  isHighestPrice = (price) => {
-    return price > this.state.highestPrice;
-  }
-
-  setHighestPrice = (price) => {
-    this.setState({
-      highestPrice: price
-    });
-  }
-
-  shouldSell = (price) => {
-    const { sellEnabled, hasSold, highestPrice, diffPercentage } = this.state;
-    if (sellEnabled && !hasSold) {
-      return price <= highestPrice - highestPrice * diffPercentage;
-    }
-  }
-
-  sell = (price) => {
-    alert("SOLD at: " + price);
-    this.setState({
-      hasSold: true
-    });
-  }
-
-  setBoughtPrice = (price) => {
-    this.setState({
-      boughtPrice: price
-    });
-  }
-
-  setDiffPercentage = (percentage) => {
-    const diffPercentage = percentage / 100;
-    this.setState({
-      diffPercentage
-    });
-  }
-
-  setSellEnabled = (value) => {
-    this.setState({
-      sellEnabled: value
-    });
-  }
-
+  /**
+   * Change current selected trading symbol
+   */
   changeSelectedCrypto = (symbol) => {
     const crypto = this.state.cryptoList.find(obj => obj.symbol === symbol);
     if (crypto === null) return;
@@ -150,6 +110,67 @@ class TradeHub extends Component {
     this.setState({
       selectedCrypto: crypto
     },() => this.rebindSocket());
+  }
+
+  /**
+   * Check price and determine what to do based on it
+   */
+  checkPrice = (price) => {
+    if (price > this.state.boughtPrice) {
+      if (this.isHighestPrice(price)) {
+        this.setHighestPrice(price);
+        return;
+      }
+
+      if (this.shouldSell(price)) {
+        this.sell(price);
+      }
+    }
+  }
+
+  /**
+   * Price at which the current trading symbol is bought
+   */
+  setBoughtPrice = (price) => this.setState({ boughtPrice: price });
+
+  /**
+   * Difference between highestprice and sell price in percetages
+   */
+  setDiffPercentage = (percentage) =>  this.setState({ diffPercentage: percentage / 100 });
+
+  /**
+   * If the bot should sell
+   */
+  setSellEnabled = (value) => this.setState({ sellEnabled: value });
+
+  /**
+   * Check if price is higher then highest price
+   */
+  isHighestPrice = (price) => price > this.state.highestPrice;
+
+  /**
+   * Set highest price of current trading symbol since running
+   */
+  setHighestPrice = (price) => this.setState({ highestPrice: price });
+
+  /**
+   * Check if the bot should sell
+   */
+  shouldSell = (price) => {
+    const { sellEnabled, hasSold, highestPrice, diffPercentage } = this.state;
+    if (sellEnabled && !hasSold) {
+      return price <= highestPrice - highestPrice * diffPercentage;
+    }
+  }
+
+  /**
+   * Sell current trading symbol at given price
+   */
+  sell = (price) => {
+    alert("SOLD at: " + price);
+    this.setState({
+      hasSold: true
+    });
   }
 
   render = () => {
