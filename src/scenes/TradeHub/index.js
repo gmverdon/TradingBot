@@ -13,11 +13,10 @@ import InputPanel from '../../components/InputPanel';
 import OptionPanel from '../../components/OptionPanel';
 import Chart from '../../components/Chart';
 
-class TradeHub extends Component {
-
+export default class TradeHub extends Component {
   state = {
     cryptoList: [],
-    selectedCrypto: {symbol:"ETHBTC", baseAsset:"ETH", quoteAsset:"BTC"},
+    selectedCrypto: { symbol: 'ETHBTC', baseAsset: 'ETH', quoteAsset: 'BTC' },
     currentPrice: 0,
     boughtPrice: 0,
     diffPercentage: 0.01,
@@ -25,26 +24,20 @@ class TradeHub extends Component {
     messages: [],
     sellEnabled: false,
     hasSold: false,
-    socketKeys: ["ETHBTC@kline_1m"]
+    socketKeys: ['ETHBTC@kline_1m']
   };
 
-  /**
-   * Make component ready
-   */
   componentDidMount = () => {
     binance.options({
-      'APIKEY':      this.props.opts.binance.key,
-      'APISECRET':   this.props.opts.binance.secret,
-      'reconnect': false
+      APIKEY:      this.props.opts.binance.key,
+      APISECRET:   this.props.opts.binance.secret,
+      reconnect: false
     });
 
     this.getCryptoList();
     this.bindSocket(this.state.selectedCrypto.symbol);
-  }
+  };
 
-  /**
-   * Remove old sockets and bind new ones
-   */
   rebindSocket = () => {
     const newCrypto = this.state.selectedCrypto.symbol;
     const newEndpoint = newCrypto.toLowerCase() + "@kline_1m";
@@ -55,11 +48,8 @@ class TradeHub extends Component {
     }
 
     this.bindSocket(newCrypto);
-  }
+  };
 
-  /**
-   * Bind a websocket to a new trading symbol
-   */
   bindSocket = (symbol) => {
     binance.websockets.candlesticks([symbol], "1m", (candlesticks) => {
       const { k:ticks } = candlesticks;
@@ -69,16 +59,10 @@ class TradeHub extends Component {
       this.setState({currentPrice});
       this.checkPrice(currentPrice);
     });
-  }
+  };
 
-  /**
-   *  Remove a websocket to a trading symbol
-   */
-  removeSocket = (endpoint) => binance.websockets.terminate(endpoint);
+  removeSocket = endpoint => binance.websockets.terminate(endpoint);
 
-  /**
-   * Get all active trading symbols
-   */
   getCryptoList = () => {
     fetch('https://api.binance.com/api/v1/exchangeInfo').then(res => res.json()).then((data) => {
       const cryptoList = data.symbols;
@@ -89,11 +73,8 @@ class TradeHub extends Component {
         });
       }
     });
-  }
+  };
 
-  /**
-   * Change current selected trading symbol
-   */
   changeSelectedCrypto = (symbol) => {
     const crypto = this.state.cryptoList.find(obj => obj.symbol === symbol);
     if (crypto === null) return;
@@ -109,12 +90,9 @@ class TradeHub extends Component {
 
     this.setState({
       selectedCrypto: crypto
-    },() => this.rebindSocket());
-  }
+    }, () => this.rebindSocket());
+  };
 
-  /**
-   * Check price and determine what to do based on it
-   */
   checkPrice = (price) => {
     if (price > this.state.boughtPrice) {
       if (this.isHighestPrice(price)) {
@@ -126,55 +104,34 @@ class TradeHub extends Component {
         this.sell(price);
       }
     }
-  }
+  };
 
-  /**
-   * Price at which the current trading symbol is bought
-   */
-  setBoughtPrice = (price) => this.setState({ boughtPrice: price });
+  setBoughtPrice = price => this.setState({ boughtPrice: price });
 
-  /**
-   * Difference between highestprice and sell price in percetages
-   */
-  setDiffPercentage = (percentage) =>  this.setState({ diffPercentage: percentage / 100 });
+  setDiffPercentage = percentage =>  this.setState({ diffPercentage: percentage / 100 });
 
-  /**
-   * If the bot should sell
-   */
-  setSellEnabled = (value) => this.setState({ sellEnabled: value });
+  setSellEnabled = value => this.setState({ sellEnabled: value });
 
-  /**
-   * Check if price is higher then highest price
-   */
-  isHighestPrice = (price) => price > this.state.highestPrice;
+  isHighestPrice = price => price > this.state.highestPrice;
 
-  /**
-   * Set highest price of current trading symbol since running
-   */
-  setHighestPrice = (price) => this.setState({ highestPrice: price });
+  setHighestPrice = price => this.setState({ highestPrice: price });
 
-  /**
-   * Check if the bot should sell
-   */
   shouldSell = (price) => {
     const { sellEnabled, hasSold, highestPrice, diffPercentage } = this.state;
     if (sellEnabled && !hasSold) {
       return price <= highestPrice - highestPrice * diffPercentage;
     }
-  }
+  };
 
-  /**
-   * Sell current trading symbol at given price
-   */
   sell = (price) => {
     alert("SOLD at: " + price);
     this.setState({
       hasSold: true
     });
-  }
+  };
 
   render = () => {
-    const {sellEnabled, selectedCrypto, cryptoList, boughtPrice } = this.state;
+    const { sellEnabled, selectedCrypto, cryptoList, boughtPrice } = this.state;
     const diffPercentage = this.state.diffPercentage * 100;
     const currentPrice = this.state.currentPrice.toFixed(6);
     const highestPrice = this.state.highestPrice.toFixed(6);
@@ -182,16 +139,16 @@ class TradeHub extends Component {
 
     const sellOptions = [
       {
-        label: "Enable",
+        label: 'Enable',
         value: true,
-        color: "success"
+        color: 'success'
       },
       {
-        label: "Disable",
+        label: 'Disable',
         value: false,
-        color: "danger"
+        color: 'danger'
       }
-    ]
+    ];
 
     return (
       <div>
@@ -241,9 +198,9 @@ class TradeHub extends Component {
 
         <Container className="mt-3">
           <Row>
-            <Col><InfoPanel title={selectedCrypto.quoteAsset + " " + currentPrice} description={selectedCrypto.baseAsset + " current price"}/></Col>
-            <Col><InfoPanel title={selectedCrypto.quoteAsset + " "  + highestPrice} description={selectedCrypto.baseAsset + " hightest price since bought"}/></Col>
-            <Col><InfoPanel title={selectedCrypto.quoteAsset + " "  + sellPrice} description={selectedCrypto.baseAsset + " price to sell on"}/></Col>
+            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${currentPrice}`} description={selectedCrypto.baseAsset + " current price"}/></Col>
+            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${highestPrice}`} description={selectedCrypto.baseAsset + " hightest price since bought"}/></Col>
+            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${sellPrice}`} description={selectedCrypto.baseAsset + " price to sell on"}/></Col>
           </Row>
         </Container>
 
@@ -255,7 +212,5 @@ class TradeHub extends Component {
         </div>
       </div>
     )
-  }
-}
-
-export default TradeHub;
+  };
+};

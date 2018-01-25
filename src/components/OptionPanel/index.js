@@ -4,44 +4,27 @@ import './styles.css';
 // Libraries
 import { Card, CardBody, CardTitle, CardText, Button, ButtonGroup } from 'reactstrap';
 
-class OptionPanel extends PureComponent {
+export default class OptionPanel extends PureComponent {
+  getButtons = () => this.props.options.map((option, i) => this.generateButton(option.label, option.value, option.color, i));
 
-  getButtons = () => {
-    const buttonList = [];
-    const options = this.props.options;
+  generateButton = (label, value, color, counter) => (
+    <Button
+      key={counter}
+      color={value === this.props.value ? color : 'secondary'}
+      onClick={() => this.handleClick(value)}>
+      {label}
+    </Button>
+  );
 
-    for (var i = 0; i < options.length; i++) {
-      buttonList.push(this.generateButton(options[i].label, options[i].value, options[i].color, i));
-    }
+  handleClick = value => this.props.onChange(value);
 
-    return buttonList;
-  }
-
-  generateButton = (label, value, color, counter) => {
-    if (value === this.props.value) {
-      return <Button key={counter} color={color} onClick={() => this.handleClick(value)}>{label}</Button>
-    }
-    return <Button key={counter} color="secondary" onClick={() => this.handleClick(value)}>{label}</Button>
-  }
-
-  handleClick = (value) => {
-    this.props.onChange(value);
-  }
-
-  render = () => {
-    const {title, description} = this.props;
-    return (
-      <Card>
-        <CardBody>
-          <CardTitle>{title}</CardTitle>
-          <CardText>{description}</CardText>
-          <ButtonGroup>
-            {this.getButtons()}
-          </ButtonGroup>
-        </CardBody>
-      </Card>
-    )
-  }
+  render = () => (
+    <Card>
+      <CardBody>
+        <CardTitle>{this.props.title}</CardTitle>
+        <CardText>{this.props.description}</CardText>
+        <ButtonGroup>{this.getButtons()}</ButtonGroup>
+      </CardBody>
+    </Card>
+  );
 };
-
-export default OptionPanel;
