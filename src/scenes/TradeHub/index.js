@@ -94,16 +94,14 @@ export default class TradeHub extends Component {
   };
 
   checkPrice = (price) => {
-    if (price > this.state.boughtPrice) {
-      if (this.isHighestPrice(price)) {
-        this.setHighestPrice(price);
-        return;
-      }
+    if (price > this.state.boughtPrice) return;
 
-      if (this.shouldSell(price)) {
-        this.sell(price);
-      }
+    if (this.isHighestPrice(price)) {
+      this.setHighestPrice(price);
+      return;
     }
+
+    if (this.shouldSell(price)) this.sell(price);
   };
 
   setBoughtPrice = price => this.setState({ boughtPrice: price });
@@ -124,7 +122,7 @@ export default class TradeHub extends Component {
   };
 
   sell = (price) => {
-    alert("SOLD at: " + price);
+    alert('SOLD at: ' + price);
     this.setState({
       hasSold: true
     });
