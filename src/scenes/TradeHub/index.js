@@ -14,41 +14,32 @@ import OptionPanel from '../../components/OptionPanel';
 import Chart from '../../components/Chart';
 
 class TradeHub extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      cryptoList: [],
-      selectedCrypto: {symbol:"ETHBTC", baseAsset:"ETH", quoteAsset:"BTC"},
-      currentPrice: 0,
-      boughtPrice: 0,
-      diffPercentage: 0.01,
-      highestPrice: 0,
-      messages: [],
-      sellEnabled: false,
-      hasSold: false,
-      socketKeys: ["ETHBTC@kline_1m"]
-    }
+  state = {
+    cryptoList: [],
+    selectedCrypto: {symbol:"ETHBTC", baseAsset:"ETH", quoteAsset:"BTC"},
+    currentPrice: 0,
+    boughtPrice: 0,
+    diffPercentage: 0.01,
+    highestPrice: 0,
+    messages: [],
+    sellEnabled: false,
+    hasSold: false,
+    socketKeys: ["ETHBTC@kline_1m"]
+  }
 
+  componentDidMount = () => {
     binance.options({
-      'APIKEY':      props.opts.binance.key,
-      'APISECRET':   props.opts.binance.secret,
+      'APIKEY':      this.props.opts.binance.key,
+      'APISECRET':   this.props.opts.binance.secret,
       'reconnect': false
     });
 
-    // bindings
-    this.setBoughtPrice = this.setBoughtPrice.bind(this);
-    this.setDiffPercentage = this.setDiffPercentage.bind(this);
-    this.setSellEnabled = this.setSellEnabled.bind(this);
-    this.changeSelectedCrypto = this.changeSelectedCrypto.bind(this);
-  }
-
-  componentDidMount() {
     this.getCryptoList();
     this.bindSocket(this.state.selectedCrypto.symbol);
   }
 
-  rebindSocket() {
+  rebindSocket = () => {
     const newCrypto = this.state.selectedCrypto.symbol;
     const newEndpoint = newCrypto.toLowerCase() + "@kline_1m";
     const subscriptions = binance.websockets.subscriptions();
@@ -60,7 +51,7 @@ class TradeHub extends Component {
     this.bindSocket(newCrypto);
   }
 
-  removeSocket(endpoint) {
+  removeSocket = (endpoint) => {
     binance.websockets.terminate(endpoint);
   }
 
@@ -75,7 +66,7 @@ class TradeHub extends Component {
     });
   }
 
-  getCryptoList() {
+  getCryptoList = () => {
     fetch('https://api.binance.com/api/v1/exchangeInfo').then(res => res.json()).then((data) => {
       const cryptoList = data.symbols;
       if (cryptoList.length > 0) {
@@ -87,7 +78,7 @@ class TradeHub extends Component {
     });
   }
 
-  checkPrice(price) {
+  checkPrice = (price) => {
     if (price > this.state.boughtPrice) {
       if (this.isHighestPrice(price)) {
         this.setHighestPrice(price);
@@ -100,50 +91,50 @@ class TradeHub extends Component {
     }
   }
 
-  isHighestPrice(price) {
+  isHighestPrice = (price) => {
     return price > this.state.highestPrice;
   }
 
-  setHighestPrice(price) {
+  setHighestPrice = (price) => {
     this.setState({
       highestPrice: price
     });
   }
 
-  shouldSell(price) {
+  shouldSell = (price) => {
     const { sellEnabled, hasSold, highestPrice, diffPercentage } = this.state;
     if (sellEnabled && !hasSold) {
       return price <= highestPrice - highestPrice * diffPercentage;
     }
   }
 
-  sell(price) {
+  sell = (price) => {
     alert("SOLD at: " + price);
     this.setState({
       hasSold: true
     });
   }
 
-  setBoughtPrice(price) {
+  setBoughtPrice = (price) => {
     this.setState({
       boughtPrice: price
     });
   }
 
-  setDiffPercentage(percentage) {
+  setDiffPercentage = (percentage) => {
     const diffPercentage = percentage / 100;
     this.setState({
       diffPercentage
     });
   }
 
-  setSellEnabled(value) {
+  setSellEnabled = (value) => {
     this.setState({
       sellEnabled: value
     });
   }
 
-  changeSelectedCrypto(symbol) {
+  changeSelectedCrypto = (symbol) => {
     const crypto = this.state.cryptoList.find(obj => obj.symbol === symbol);
     if (crypto === null) return;
 
@@ -151,6 +142,7 @@ class TradeHub extends Component {
       const currentPrice = parseFloat(ticker[crypto.symbol]);
       this.setState({
         currentPrice,
+        sellEnabled: false,
         highestPrice: currentPrice
       });
     });
@@ -160,7 +152,7 @@ class TradeHub extends Component {
     },() => this.rebindSocket());
   }
 
-  render() {
+  render = () => {
     const {sellEnabled, selectedCrypto, cryptoList, boughtPrice } = this.state;
     const diffPercentage = this.state.diffPercentage * 100;
     const currentPrice = this.state.currentPrice.toFixed(6);
@@ -186,20 +178,6 @@ class TradeHub extends Component {
 
         <Container>
           <HorizontalTabList list={cryptoList} selectedItem={this.state.selectedCrypto} changeSelected={this.changeSelectedCrypto}/>
-          <Row>
-            <Col><InfoPanel title={selectedCrypto.quoteAsset + " " + currentPrice} description={selectedCrypto.baseAsset + " current price"}/></Col>
-            <Col><InfoPanel title={selectedCrypto.quoteAsset + " "  + highestPrice} description={selectedCrypto.baseAsset + " hightest price since bought"}/></Col>
-            <Col><InfoPanel title={selectedCrypto.quoteAsset + " "  + sellPrice} description={selectedCrypto.baseAsset + " price to sell on"}/></Col>
-          </Row>
-        </Container>
-
-        <Container className="mt-3">
-          <Row>
-            <Col><Chart selectedCrypto={this.state.selectedCrypto} /></Col>
-          </Row>
-        </Container>
-
-        <Container className="mt-3">
           <Row>
             <Col>
               <InputPanel
@@ -231,6 +209,20 @@ class TradeHub extends Component {
                 title="Should sell"
                 description={"If the bot should sell at " + sellPrice} />
             </Col>
+          </Row>
+        </Container>
+
+        <Container className="mt-3">
+          <Row>
+            <Col><Chart selectedCrypto={this.state.selectedCrypto} /></Col>
+          </Row>
+        </Container>
+
+        <Container className="mt-3">
+          <Row>
+            <Col><InfoPanel title={selectedCrypto.quoteAsset + " " + currentPrice} description={selectedCrypto.baseAsset + " current price"}/></Col>
+            <Col><InfoPanel title={selectedCrypto.quoteAsset + " "  + highestPrice} description={selectedCrypto.baseAsset + " hightest price since bought"}/></Col>
+            <Col><InfoPanel title={selectedCrypto.quoteAsset + " "  + sellPrice} description={selectedCrypto.baseAsset + " price to sell on"}/></Col>
           </Row>
         </Container>
 

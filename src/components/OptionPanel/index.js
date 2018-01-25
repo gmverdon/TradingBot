@@ -17,7 +17,7 @@ class OptionPanel extends PureComponent {
     return buttonList;
   }
 
-  generateButton(label, value, color, counter) {
+  generateButton = (label, value, color, counter) => {
     if (value === this.props.value) {
       return <Button key={counter} color={color} onClick={() => this.handleClick(value)}>{label}</Button>
     }
@@ -28,7 +28,7 @@ class OptionPanel extends PureComponent {
     this.props.onChange(value);
   }
 
-  render() {
+  render = () => {
     const {title, description} = this.props;
     return (
       <Card>

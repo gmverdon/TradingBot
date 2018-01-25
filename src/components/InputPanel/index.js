@@ -6,7 +6,7 @@ import { Card, CardBody, CardTitle, CardText, Button, Input } from 'reactstrap';
 
 class InputPanel extends Component {
   state = {
-    value: 0,
+    value: this.props.value,
     disabled: true
   }
 
@@ -22,7 +22,7 @@ class InputPanel extends Component {
     this.setState({disabled: true})
   }
 
-  render() {
+  render = () => {
     const {onChange, name, step, title, description, placeholder} = this.props;
     return (
       <Card>
