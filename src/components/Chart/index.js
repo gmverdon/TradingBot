@@ -9,7 +9,8 @@ const Chart = ({ selectedCrypto }) => (
   <Card id='chart'>
     <TradingViewWidget
       symbol={'BINANCE:' + selectedCrypto.symbol}
-      autosize />
+      autosize
+    />
   </Card>
 );
 

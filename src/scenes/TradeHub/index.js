@@ -163,7 +163,8 @@ export default class TradeHub extends Component {
                 onChange={this.setBoughtPrice}
                 title='Bought'
                 description={'Price in ' + selectedCrypto.quoteAsset + ' at which you bought ' + selectedCrypto.baseAsset}
-                placeholder='Bought price'/>
+                placeholder='Bought price'
+              />
             </Col>
 
             <Col>
@@ -174,7 +175,8 @@ export default class TradeHub extends Component {
                 onChange={this.setDiffPercentage}
                 title='Difference'
                 description={'% between highestprice and sell price.'}
-                placeholder='Difference %'/>
+                placeholder='Difference %'
+              />
             </Col>
 
             <Col>
@@ -183,7 +185,8 @@ export default class TradeHub extends Component {
                 value={sellEnabled}
                 onChange={this.setSellEnabled}
                 title='Should sell'
-                description={'If the bot should sell at ' + sellPrice} />
+                description={'If the bot should sell at ' + sellPrice}
+              />
             </Col>
           </Row>
         </Container>
@@ -196,9 +199,9 @@ export default class TradeHub extends Component {
 
         <Container className='mt-3'>
           <Row>
-            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${currentPrice}`} description={selectedCrypto.baseAsset + ' current price'}/></Col>
-            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${highestPrice}`} description={selectedCrypto.baseAsset + ' hightest price since bought'}/></Col>
-            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${sellPrice}`} description={selectedCrypto.baseAsset + ' price to sell on'}/></Col>
+            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${currentPrice}`} description={selectedCrypto.baseAsset + ' current price'} /></Col>
+            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${highestPrice}`} description={selectedCrypto.baseAsset + ' hightest price since bought'} /></Col>
+            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${sellPrice}`} description={selectedCrypto.baseAsset + ' price to sell on'} /></Col>
           </Row>
         </Container>
 
