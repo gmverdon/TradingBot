@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import './styles.css';
 
 export default class HorizontalTabList extends Component {
-  getListItems = () => this.props.list.map((item, i) => this.generateListItem(item.symbol, i));
+  getListItems = () =>
+    this.props.list.map((item, i) => this.generateListItem(item.symbol, i));
 
   generateListItem = (title, counter) => (
     <li

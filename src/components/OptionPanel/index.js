@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import './styles.css';
 import { Card, CardBody, CardTitle, CardText, Button, ButtonGroup } from 'reactstrap';
 
