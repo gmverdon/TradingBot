@@ -153,25 +153,25 @@ export default class TradeHub extends Component {
           <Row>
             <Col>
               <InputPanel
-                name='bought_price'
+                name="bought_price"
                 value={boughtPrice}
-                step='0.01'
+                step="0.01"
                 onChange={this.setBoughtPrice}
-                title='Bought'
+                title="Bought"
                 description={'Price in ' + selectedCrypto.quoteAsset + ' at which you bought ' + selectedCrypto.baseAsset}
-                placeholder='Bought price'
+                placeholder="Bought price"
               />
             </Col>
 
             <Col>
               <InputPanel
-                name='diffpercentage'
+                name="diffpercentage"
                 value={diffPercentage}
-                step='0.01'
+                step="0.01"
                 onChange={this.setDiffPercentage}
-                title='Difference'
+                title="Difference"
                 description={'% between highestprice and sell price.'}
-                placeholder='Difference %'
+                placeholder="Difference %"
               />
             </Col>
 
@@ -180,7 +180,7 @@ export default class TradeHub extends Component {
                 options={sellOptions}
                 value={sellEnabled}
                 onChange={this.setSellEnabled}
-                title='Should sell'
+                title="Should sell"
                 description={'If the bot should sell at ' + sellPrice}
               />
             </Col>

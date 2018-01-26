@@ -13,12 +13,12 @@ export default class Root extends Component {
       <Switch>
         <Route
           exact
-          path='/'
+          path="/"
           render={(props) => <Home opts={this.props.opts} />}
         />
         <Route
           exact
-          path='/tradehub'
+          path="/tradehub"
           render={(props) => <TradeHub opts={this.props.opts} />}
         />
         <Route render={(props) => <TradeHub opts={this.props.opts} />} />
