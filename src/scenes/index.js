@@ -1,26 +1,28 @@
 import React, {Component} from 'react'
-
-// Libraries
 import {
   BrowserRouter as Router,
-  Route
+  Route,
+  Switch
 } from 'react-router-dom'
-
-// Components
 import Home from './Home';
 import TradeHub from './TradeHub';
 
 export default class Root extends Component {
   render = () => (
     <Router>
-      <div>
-        <Route exact path='/' render={(props) => (
-          <Home opts={this.props.opts} />
-        )}/>
-        <Route exact path='/tradehub' render={(props) => (
-          <TradeHub opts={this.props.opts} />
-        )}/>
-      </div>
+      <Switch>
+        <Route
+          exact
+          path='/'
+          render={(props) => <Home opts={this.props.opts} />}
+        />
+        <Route
+          exact
+          path='/tradehub'
+          render={(props) => <TradeHub opts={this.props.opts} />}
+        />
+        <Route render={(props) => <TradeHub opts={this.props.opts} />} />
+      </Switch>
     </Router>
   )
 };

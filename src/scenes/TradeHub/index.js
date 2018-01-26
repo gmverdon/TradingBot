@@ -199,9 +199,24 @@ export default class TradeHub extends Component {
 
         <Container className='mt-3'>
           <Row>
-            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${currentPrice}`} description={selectedCrypto.baseAsset + ' current price'} /></Col>
-            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${highestPrice}`} description={selectedCrypto.baseAsset + ' hightest price since bought'} /></Col>
-            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${sellPrice}`} description={selectedCrypto.baseAsset + ' price to sell on'} /></Col>
+            <Col>
+              <InfoPanel
+                title={`${selectedCrypto.quoteAsset} ${currentPrice}`}
+                description={selectedCrypto.baseAsset + ' current price'}
+               />
+            </Col>
+            <Col>
+              <InfoPanel
+                title={`${selectedCrypto.quoteAsset} ${highestPrice}`}
+                description={selectedCrypto.baseAsset + ' hightest price since bought'}
+              />
+            </Col>
+            <Col>
+              <InfoPanel
+                title={`${selectedCrypto.quoteAsset} ${sellPrice}`}
+                description={selectedCrypto.baseAsset + ' price to sell on'}
+              />
+            </Col>
           </Row>
         </Container>
 
