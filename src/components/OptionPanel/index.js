@@ -1,11 +1,10 @@
 import React, {PureComponent} from 'react';
 import './styles.css';
-
-// Libraries
 import { Card, CardBody, CardTitle, CardText, Button, ButtonGroup } from 'reactstrap';
 
 export default class OptionPanel extends PureComponent {
-  getButtons = () => this.props.options.map((option, i) => this.generateButton(option.label, option.value, option.color, i));
+  getButtons = () =>
+    this.props.options.map((option, i) => this.generateButton(option.label, option.value, option.color, i));
 
   generateButton = (label, value, color, counter) => (
     <Button

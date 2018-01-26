@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import './styles.css';
-
-// Libraries
 import binance from 'binance-api';
 import { Container, Row, Col } from 'reactstrap';
-
-// Components
 import Header from '../../components/Header';
 import HorizontalTabList from '../../components/HorizontalTabList';
 import InfoPanel from '../../components/InfoPanel';

@@ -1,9 +1,6 @@
 import React from 'react';
 import './styles.css';
-
-// Libraries
-import { Card, CardText, CardBody,
-  CardTitle, CardSubtitle } from 'reactstrap';
+import { Card, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 
 const InfoPanel = ({ title, subtitle, description }) => (
   <Card>

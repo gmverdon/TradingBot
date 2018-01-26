@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import './styles.css';
-
-// Libraries
 import { Card, CardBody, CardTitle, CardText, Button, Input } from 'reactstrap';
 
 export default class InputPanel extends Component {

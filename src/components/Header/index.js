@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './styles.css';
-
-// Libraries
 import { NavLink } from 'react-router-dom'
 import {
   Collapse,

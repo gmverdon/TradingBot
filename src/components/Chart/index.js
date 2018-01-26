@@ -1,7 +1,5 @@
 import React from 'react';
 import './styles.css';
-
-// libraries
 import { Card } from 'reactstrap';
 import TradingViewWidget from 'react-tradingview-widget';
 
