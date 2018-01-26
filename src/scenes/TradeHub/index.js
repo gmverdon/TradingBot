@@ -19,7 +19,7 @@ export default class TradeHub extends Component {
     highestPrice: 0,
     messages: [],
     sellEnabled: false,
-    hasSold: false,
+    sold: false,
     socketKeys: ['ETHBTC@kline_1m']
   };
 
@@ -40,7 +40,7 @@ export default class TradeHub extends Component {
     const subscriptions = binance.websockets.subscriptions();
 
     for (let endpoint in subscriptions) {
-      if (endpoint !== newEndpoint) { this.removeSocket(endpoint); }
+      if (endpoint !== newEndpoint) this.removeSocket(endpoint);
     }
 
     this.bindSocket(newCrypto);
@@ -48,8 +48,8 @@ export default class TradeHub extends Component {
 
   bindSocket = (symbol) => {
     binance.websockets.candlesticks([symbol], '1m', (candlesticks) => {
-      const { k:ticks } = candlesticks;
-      const { c:close } = ticks;
+      const { k: ticks } = candlesticks;
+      const { c: close } = ticks;
       const currentPrice = parseFloat(close);
 
       this.setState({currentPrice});
@@ -90,7 +90,7 @@ export default class TradeHub extends Component {
   };
 
   checkPrice = (price) => {
-    if (price > this.state.boughtPrice) return;
+    if (price < this.state.boughtPrice) return;
 
     if (this.isHighestPrice(price)) {
       this.setHighestPrice(price);
@@ -111,8 +111,8 @@ export default class TradeHub extends Component {
   setHighestPrice = price => this.setState({ highestPrice: price });
 
   shouldSell = (price) => {
-    const { sellEnabled, hasSold, highestPrice, diffPercentage } = this.state;
-    if (sellEnabled && !hasSold) {
+    const { sellEnabled, sold, highestPrice, diffPercentage } = this.state;
+    if (sellEnabled && !sold) {
       return price <= highestPrice - highestPrice * diffPercentage;
     }
   };
@@ -120,7 +120,7 @@ export default class TradeHub extends Component {
   sell = (price) => {
     alert('SOLD at: ' + price);
     this.setState({
-      hasSold: true
+      sold: true
     });
   };
 
@@ -170,7 +170,7 @@ export default class TradeHub extends Component {
                 step="0.01"
                 onChange={this.setDiffPercentage}
                 title="Difference"
-                description={'% between highestprice and sell price.'}
+                description="% between highestprice and sell price."
                 placeholder="Difference %"
               />
             </Col>
@@ -220,7 +220,7 @@ export default class TradeHub extends Component {
           <hr/>
           <p>(only when the price is higher then the boughtPrice). <br/>
             Difference between highestprice and sell price is {(this.state.diffPercentage * 100).toFixed(2)}%</p>
-          <h1>Sold: {this.state.hasSold.toString()}</h1>
+          <h1>Sold: {this.state.sold.toString()}</h1>
         </div>
       </div>
     )

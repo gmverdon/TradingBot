@@ -14,14 +14,14 @@ export default class Root extends Component {
         <Route
           exact
           path="/"
-          render={(props) => <Home opts={this.props.opts} />}
+          render={props => <Home opts={this.props.opts} />}
         />
         <Route
           exact
           path="/tradehub"
-          render={(props) => <TradeHub opts={this.props.opts} />}
+          render={props => <TradeHub opts={this.props.opts} />}
         />
-        <Route render={(props) => <TradeHub opts={this.props.opts} />} />
+        <Route render={props => <TradeHub opts={this.props.opts} />} />
       </Switch>
     </Router>
   )

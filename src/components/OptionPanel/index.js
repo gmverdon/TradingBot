@@ -1,19 +1,20 @@
 import React, { PureComponent } from 'react';
 import './styles.css';
-import { Card, CardBody, CardTitle, CardText, Button, ButtonGroup } from 'reactstrap';
+import { Card, CardBody, CardTitle, CardText, ButtonGroup } from 'reactstrap';
+import OptionButton from './components/OptionButton';
 
 export default class OptionPanel extends PureComponent {
   getButtons = () =>
-    this.props.options.map((option, i) => this.generateButton(option.label, option.value, option.color, i));
-
-  generateButton = (label, value, color, counter) => (
-    <Button
-      key={counter}
-      color={value === this.props.value ? color : 'secondary'}
-      onClick={() => this.handleClick(value)}>
-      {label}
-    </Button>
-  );
+    this.props.options.map((option, i) =>
+      <OptionButton
+        handleClick={this.handleClick}
+        label={option.label}
+        currentValue={this.props.value}
+        optionValue={option.value}
+        color={option.color}
+        counter={i}
+      />
+    );
 
   handleClick = value => this.props.onChange(value);
 
