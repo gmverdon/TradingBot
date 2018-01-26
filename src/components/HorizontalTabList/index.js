@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
 import './styles.css';
+import ListItem from './components/ListItem';
 
 export default class HorizontalTabList extends Component {
   getListItems = () =>
-    this.props.list.map((item, i) => this.generateListItem(item.symbol, i));
-
-  generateListItem = (title, counter) => (
-    <li
-      className={'list-inline-item' + (title === this.props.selectedItem.symbol ? ' active' : '')}
-      key={counter}
-      onClick={() => this.changeSelectedItem(title)}>
-      {title}
-    </li>
-  );
+    this.props.list.map((item, i) =>
+      <ListItem
+        title={item.symbol}
+        symbol={this.props.selectedItem.symbol}
+        counter={i}
+        changeSelectedItem={this.changeSelectedItem}
+      />
+    );
 
   changeSelectedItem = title => this.props.changeSelected(title);
 
