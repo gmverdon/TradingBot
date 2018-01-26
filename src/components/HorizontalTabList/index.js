@@ -16,7 +16,7 @@ export default class HorizontalTabList extends Component {
   changeSelectedItem = title => this.props.changeSelected(title);
 
   render = () => (
-    <ul className="list-inline tablist">
+    <ul className='list-inline tablist'>
       {this.getListItems()}
     </ul>
   );

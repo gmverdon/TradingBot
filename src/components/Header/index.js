@@ -13,13 +13,13 @@ import {
 
 export default class Header extends Component {
   render = () => (
-    <Navbar color="faded" light expand="md">
-      <NavbarBrand href="/">TradeHub</NavbarBrand>
+    <Navbar color='faded' light expand='md'>
+      <NavbarBrand href='/'>TradeHub</NavbarBrand>
       <NavbarToggler onClick={this.toggle} />
       <Collapse isOpen navbar>
-        <Nav className="ml-auto" navbar>
+        <Nav className='ml-auto' navbar>
           <NavItem>
-            <NavLink to="/tradehub">TradeHub</NavLink>
+            <NavLink to='/tradehub'>TradeHub</NavLink>
           </NavItem>
         </Nav>
       </Collapse>

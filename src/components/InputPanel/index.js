@@ -30,9 +30,9 @@ export default class InputPanel extends Component {
         <CardBody>
           <CardTitle>{title}</CardTitle>
           <CardText>{description}</CardText>
-          <div className="horizontalGroup">
-            <Input onChange={this.handleChange} step={step} value={value} type="number" name={name} placeholder={placeholder} />
-            <Button disabled={disabled} onClick={this.handleClick} className="ml-3" color="primary">Submit</Button>
+          <div className='horizontalGroup'>
+            <Input onChange={this.handleChange} step={step} value={value} type='number' name={name} placeholder={placeholder} />
+            <Button disabled={disabled} onClick={this.handleClick} className='ml-3' color='primary'>Submit</Button>
           </div>
         </CardBody>
       </Card>

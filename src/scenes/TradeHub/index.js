@@ -40,7 +40,7 @@ export default class TradeHub extends Component {
 
   rebindSocket = () => {
     const newCrypto = this.state.selectedCrypto.symbol;
-    const newEndpoint = newCrypto.toLowerCase() + "@kline_1m";
+    const newEndpoint = newCrypto.toLowerCase() + '@kline_1m';
     const subscriptions = binance.websockets.subscriptions();
 
     for (let endpoint in subscriptions) {
@@ -51,7 +51,7 @@ export default class TradeHub extends Component {
   };
 
   bindSocket = (symbol) => {
-    binance.websockets.candlesticks([symbol], "1m", (candlesticks) => {
+    binance.websockets.candlesticks([symbol], '1m', (candlesticks) => {
       const { k:ticks } = candlesticks;
       const { c:close } = ticks;
       const currentPrice = parseFloat(close);
@@ -157,24 +157,24 @@ export default class TradeHub extends Component {
           <Row>
             <Col>
               <InputPanel
-                name="bought_price"
+                name='bought_price'
                 value={boughtPrice}
-                step="0.01"
+                step='0.01'
                 onChange={this.setBoughtPrice}
-                title="Bought"
-                description={"Price in " + selectedCrypto.quoteAsset + " at which you bought " + selectedCrypto.baseAsset}
-                placeholder="Bought price"/>
+                title='Bought'
+                description={'Price in ' + selectedCrypto.quoteAsset + ' at which you bought ' + selectedCrypto.baseAsset}
+                placeholder='Bought price'/>
             </Col>
 
             <Col>
               <InputPanel
-                name="diffpercentage"
+                name='diffpercentage'
                 value={diffPercentage}
-                step="0.01"
+                step='0.01'
                 onChange={this.setDiffPercentage}
-                title="Difference"
-                description={"% between highestprice and sell price."}
-                placeholder="Difference %"/>
+                title='Difference'
+                description={'% between highestprice and sell price.'}
+                placeholder='Difference %'/>
             </Col>
 
             <Col>
@@ -182,23 +182,23 @@ export default class TradeHub extends Component {
                 options={sellOptions}
                 value={sellEnabled}
                 onChange={this.setSellEnabled}
-                title="Should sell"
-                description={"If the bot should sell at " + sellPrice} />
+                title='Should sell'
+                description={'If the bot should sell at ' + sellPrice} />
             </Col>
           </Row>
         </Container>
 
-        <Container className="mt-3">
+        <Container className='mt-3'>
           <Row>
             <Col><Chart selectedCrypto={this.state.selectedCrypto} /></Col>
           </Row>
         </Container>
 
-        <Container className="mt-3">
+        <Container className='mt-3'>
           <Row>
-            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${currentPrice}`} description={selectedCrypto.baseAsset + " current price"}/></Col>
-            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${highestPrice}`} description={selectedCrypto.baseAsset + " hightest price since bought"}/></Col>
-            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${sellPrice}`} description={selectedCrypto.baseAsset + " price to sell on"}/></Col>
+            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${currentPrice}`} description={selectedCrypto.baseAsset + ' current price'}/></Col>
+            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${highestPrice}`} description={selectedCrypto.baseAsset + ' hightest price since bought'}/></Col>
+            <Col><InfoPanel title={`${selectedCrypto.quoteAsset} ${sellPrice}`} description={selectedCrypto.baseAsset + ' price to sell on'}/></Col>
           </Row>
         </Container>
 
