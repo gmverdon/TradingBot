@@ -8,7 +8,7 @@ export default class HorizontalTabList extends Component {
       <ListItem
         title={item.symbol}
         symbol={this.props.selectedItem.symbol}
-        counter={i}
+        key={i}
         changeSelectedItem={this.changeSelectedItem}
       />
     );

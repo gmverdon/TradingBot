@@ -12,7 +12,7 @@ export default class OptionPanel extends PureComponent {
         currentValue={this.props.value}
         optionValue={option.value}
         color={option.color}
-        counter={i}
+        key={i}
       />
     );
 
