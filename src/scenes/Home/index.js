@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './styles.css';
 
 // Libraries
-import binance from 'binance-api';
+import binance from 'node-binance-api';
 
 // Components
 import Header from '../../components/Header';
@@ -19,16 +19,16 @@ class Home extends Component {
     }
 
     binance.options({
-      'APIKEY':      props.opts.binance.key,
-      'APISECRET':   props.opts.binance.secret,
-      'recvWindow': 60000
+      APIKEY:      props.opts.binance.key,
+      APISECRET:   props.opts.binance.secret,
+      recvWindow:  60000
     })
   }
 
   componentDidMount() {
     var self = this;
-    binance.websockets.candlesticks(['BTCUSDT'], "1m", function(candlesticks) {
-    	let { e:eventType, E:eventTime, s:symbol, k:ticks } = candlesticks;
+    binance.websockets.candlesticks(['BTCUSDT'], "1m", (candlesticks) => {
+      let { e:eventType, E:eventTime, s:symbol, k:ticks } = candlesticks;
     	let { o:open, h:high, l:low, c:close, v:volume, n:trades, i:interval, x:isFinal, q:quoteVolume, V:buyVolume, Q:quoteBuyVolume } = ticks;
     	//console.log(symbol+" "+interval+" candlestick update");
       self.setState({

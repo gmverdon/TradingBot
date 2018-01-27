@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './styles.css';
-import binance from 'binance-api';
+import binance from 'node-binance-api';
 import { Container, Row, Col } from 'reactstrap';
 import Header from '../../components/Header';
 import HorizontalTabList from '../../components/HorizontalTabList';
@@ -27,7 +27,7 @@ export default class TradeHub extends Component {
     binance.options({
       APIKEY:      this.props.opts.binance.key,
       APISECRET:   this.props.opts.binance.secret,
-      reconnect: false
+      reconnect:   false
     });
 
     this.getCryptoList();
@@ -75,7 +75,7 @@ export default class TradeHub extends Component {
     const crypto = this.state.cryptoList.find(obj => obj.symbol === symbol);
     if (crypto === null) return;
 
-    binance.prices((ticker) => {
+    binance.prices((error, ticker) => {
       const currentPrice = parseFloat(ticker[crypto.symbol]);
       this.setState({
         currentPrice,
