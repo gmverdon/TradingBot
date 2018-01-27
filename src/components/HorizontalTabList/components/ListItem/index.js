@@ -9,7 +9,8 @@ export default class ListItem extends Component {
     return (
       <li
         className={'list-inline-item' + (title === symbol ? ' active' : '')}
-        onClick={this.changeSelected}>
+        onClick={this.changeSelected}
+      >
         {title}
       </li>
     );

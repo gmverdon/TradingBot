@@ -10,7 +10,8 @@ export default class OptionButton extends PureComponent {
     return (
       <Button
         color={currentValue === optionValue ? color : 'secondary'}
-        onClick={this.handleClick} >
+        onClick={this.handleClick}
+      >
         {label}
       </Button>
     );

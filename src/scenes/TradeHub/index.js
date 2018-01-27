@@ -187,13 +187,13 @@ export default class TradeHub extends Component {
           </Row>
         </Container>
 
-        <Container className='mt-3'>
+        <Container className="mt-3">
           <Row>
             <Col><Chart selectedCrypto={this.state.selectedCrypto} /></Col>
           </Row>
         </Container>
 
-        <Container className='mt-3'>
+        <Container className="mt-3">
           <Row>
             <Col>
               <InfoPanel
