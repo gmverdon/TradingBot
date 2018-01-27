@@ -7,7 +7,8 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem } from 'reactstrap';
+  NavItem }
+from 'reactstrap';
 
 const Header = () => (
   <Navbar color="faded" light expand="md">
