@@ -26,6 +26,8 @@ export default class HorizontalTabList extends Component {
 
 HorizontalTabList.propTypes = {
   selectedValue: PropTypes.string.isRequired,
-  list: PropTypes.arrayOf(PropTypes.object).isRequired,
+  list: PropTypes.arrayOf(PropTypes.shape({
+    symbol: PropTypes.string
+  })).isRequired,
   changeSelected: PropTypes.func.isRequired,
 };
