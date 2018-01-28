@@ -4,6 +4,20 @@ import { Card, CardBody, CardTitle, CardText, Button, Input } from 'reactstrap';
 import './styles.css';
 
 export default class InputPanel extends Component {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.bool,
+    ]).isRequired,
+    step: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired,
+  };
+
   state = {
     value: this.props.value,
     disabled: true,
@@ -38,17 +52,3 @@ export default class InputPanel extends Component {
     );
   };
 }
-
-InputPanel.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.bool,
-  ]).isRequired,
-  step: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
-};

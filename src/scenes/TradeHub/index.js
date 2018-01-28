@@ -11,6 +11,15 @@ import OptionPanel from '../../components/OptionPanel';
 import Chart from '../../components/Chart';
 
 export default class TradeHub extends Component {
+  static propTypes = {
+    opts: PropTypes.shape({
+      binance: PropTypes.shape({
+        key: PropTypes.string.isRequired,
+        secret: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  };
+
   state = {
     cryptoList: [],
     selectedCrypto: { symbol: 'ETHBTC', baseAsset: 'ETH', quoteAsset: 'BTC' },
@@ -232,12 +241,3 @@ export default class TradeHub extends Component {
     );
   };
 }
-
-TradeHub.propTypes = {
-  opts: PropTypes.shape({
-    binance: PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      secret: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};

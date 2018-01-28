@@ -5,6 +5,14 @@ import ListItem from './components/ListItem';
 
 
 export default class HorizontalTabList extends Component {
+  static propTypes = {
+    selectedValue: PropTypes.string.isRequired,
+    list: PropTypes.arrayOf(PropTypes.shape({
+      symbol: PropTypes.string,
+    })).isRequired,
+    changeSelected: PropTypes.func.isRequired,
+  };
+
   getListItems = () =>
     this.props.list.map(item => (
       <ListItem
@@ -23,11 +31,3 @@ export default class HorizontalTabList extends Component {
     </ul>
   );
 }
-
-HorizontalTabList.propTypes = {
-  selectedValue: PropTypes.string.isRequired,
-  list: PropTypes.arrayOf(PropTypes.shape({
-    symbol: PropTypes.string
-  })).isRequired,
-  changeSelected: PropTypes.func.isRequired,
-};

@@ -3,6 +3,12 @@ import PropTypes from 'prop-types';
 import './styles.css';
 
 export default class ListItem extends Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    selected: PropTypes.bool.isRequired,
+    changeSelected: PropTypes.func.isRequired,
+  };
+
   changeSelected = () => this.props.changeSelected(this.props.title);
 
   render = () => {
@@ -18,9 +24,3 @@ export default class ListItem extends Component {
     );
   };
 }
-
-ListItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  selected: PropTypes.bool.isRequired,
-  changeSelected: PropTypes.func.isRequired,
-};

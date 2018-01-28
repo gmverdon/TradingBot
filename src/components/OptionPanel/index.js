@@ -10,6 +10,26 @@ export default class OptionPanel extends PureComponent {
     value: '',
   }
 
+  static propTypes = {
+    options: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+      value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.bool,
+      ]).isRequired,
+    })).isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.bool,
+    ]),
+    onChange: PropTypes.func.isRequired,
+  };
+
   getButtons = options =>
     options.map(option => (
       <OptionButton
@@ -34,23 +54,3 @@ export default class OptionPanel extends PureComponent {
     </Card>
   );
 }
-// default shit
-OptionPanel.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.bool,
-    ]).isRequired,
-  })).isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.bool,
-  ]),
-  onChange: PropTypes.func.isRequired,
-};
