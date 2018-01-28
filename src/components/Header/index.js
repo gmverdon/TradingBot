@@ -6,8 +6,8 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem }
-from 'reactstrap';
+  NavItem,
+} from 'reactstrap';
 import './styles.css';
 
 const Header = () => (

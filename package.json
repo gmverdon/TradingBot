@@ -12,7 +12,8 @@
     "react-scripts": "1.0.17",
     "react-tradingview-widget": "^1.2.2",
     "reactstrap": "^5.0.0-alpha.4",
-    "ws": "^3.3.3"
+    "ws": "^3.3.3",
+    "dotenv": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -21,7 +22,6 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "dotenv": "^4.0.0",
     "eslint": "^4.16.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",

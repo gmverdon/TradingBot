@@ -8,7 +8,7 @@ import './styles.css';
 export default class OptionPanel extends PureComponent {
   static defaultProps = {
     value: '',
-  }
+  };
 
   static propTypes = {
     options: PropTypes.arrayOf(PropTypes.shape({
