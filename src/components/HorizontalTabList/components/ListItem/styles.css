@@ -1,0 +1,24 @@
+.list-inline-item {
+  margin-right: 0 !important;
+}
+
+.listItemButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 20px;
+  margin-right: 0px;
+}
+
+.listItemButton:hover {
+  background: #262b3e;
+  color: #fff;
+}
+
+.active {
+  z-index: 2;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}

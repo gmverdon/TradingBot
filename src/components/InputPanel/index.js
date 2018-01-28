@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import './styles.css';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Card, CardBody, CardTitle, CardText, Button, Input } from 'reactstrap';
+import './styles.css';
 
 export default class InputPanel extends Component {
   state = {
     value: this.props.value,
-    disabled: true
+    disabled: true,
   };
 
   handleChange = (e) => {
@@ -21,7 +22,7 @@ export default class InputPanel extends Component {
   };
 
   render = () => {
-    const { onChange, name, step, title, description, placeholder } = this.props;
+    const { name, step, title, description, placeholder } = this.props;
     const { value, disabled } = this.state;
     return (
       <Card>
@@ -36,4 +37,18 @@ export default class InputPanel extends Component {
       </Card>
     );
   };
+}
+
+InputPanel.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool,
+  ]).isRequired,
+  step: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
 };

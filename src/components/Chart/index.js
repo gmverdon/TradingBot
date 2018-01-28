@@ -1,15 +1,20 @@
 import React from 'react';
-import './styles.css';
+import PropTypes from 'prop-types';
 import { Card } from 'reactstrap';
 import TradingViewWidget from 'react-tradingview-widget';
+import './styles.css';
 
-const Chart = ({ selectedCrypto }) => (
+const Chart = ({ symbol }) => (
   <Card id="chart">
     <TradingViewWidget
-      symbol={'BINANCE:' + selectedCrypto.symbol}
+      symbol={`BINANCE:${symbol}`}
       autosize
     />
   </Card>
 );
+
+Chart.propTypes = {
+  symbol: PropTypes.string.isRequired,
+};
 
 export default Chart;

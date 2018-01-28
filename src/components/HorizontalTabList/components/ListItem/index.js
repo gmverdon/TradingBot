@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './styles.css';
 
 export default class ListItem extends Component {
-  changeSelected = () => this.props.changeSelectedItem(this.props.title);
+  changeSelected = () => this.props.changeSelected(this.props.title);
 
   render = () => {
-    const { title, symbol } = this.props;
+    const { title, selected } = this.props;
     return (
       <li
-        className={'list-inline-item' + (title === symbol ? ' active' : '')}
-        onClick={this.changeSelected}
+        className="list-inline-item"
       >
-        {title}
+        <button className={`listItemButton ${selected ? 'active' : ''}`} onClick={this.changeSelected}>
+          {title}
+        </button>
       </li>
     );
   };
+}
+
+ListItem.propTypes = {
+  title: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
+  changeSelected: PropTypes.func.isRequired,
 };

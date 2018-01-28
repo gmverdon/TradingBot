@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import './styles.css';
-import { NavLink } from 'react-router-dom'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   Collapse,
   Navbar,
@@ -9,6 +8,7 @@ import {
   Nav,
   NavItem }
 from 'reactstrap';
+import './styles.css';
 
 const Header = () => (
   <Navbar color="faded" light expand="md">

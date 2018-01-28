@@ -5,6 +5,7 @@
   "dependencies": {
     "bootstrap": "^4.0.0-beta.3",
     "node-binance-api": "git+https://github.com/gmverdon/node-binance-api.git",
+    "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",

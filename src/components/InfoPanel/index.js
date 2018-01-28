@@ -1,6 +1,7 @@
 import React from 'react';
-import './styles.css';
+import PropTypes from 'prop-types';
 import { Card, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+import './styles.css';
 
 const InfoPanel = ({ title, subtitle, description }) => (
   <Card>
@@ -11,5 +12,15 @@ const InfoPanel = ({ title, subtitle, description }) => (
     </CardBody>
   </Card>
 );
+
+InfoPanel.defaultProps = {
+  subtitle: '',
+};
+
+InfoPanel.propTypes = {
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
+  description: PropTypes.string.isRequired,
+};
 
 export default InfoPanel;
