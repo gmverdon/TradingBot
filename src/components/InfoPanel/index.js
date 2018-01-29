@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { Row, Col, Card, CardText, CardBody, CardTitle } from 'reactstrap';
 import './styles.css';
 
-const InfoPanel = ({ enabled, title, subtitle, subtitleClass, description }) => (
-  <Card className={enabled ? '' : 'disabled'}>
+const InfoPanel = ({ title, subtitle, subtitleClass, description }) => (
+  <Card>
     <CardBody>
       <Row>
         <Col>
-          <CardTitle>{title} </CardTitle>
+          <CardTitle>{title}</CardTitle>
         </Col>
         <Col xs="3">
           <CardText className={`${subtitleClass} subtitle`}>{subtitle}</CardText>
@@ -20,7 +20,6 @@ const InfoPanel = ({ enabled, title, subtitle, subtitleClass, description }) => 
 );
 
 InfoPanel.propTypes = {
-  enabled: PropTypes.bool,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
   subtitleClass: PropTypes.string,
@@ -28,7 +27,6 @@ InfoPanel.propTypes = {
 };
 
 InfoPanel.defaultProps = {
-  enabled: true,
   subtitle: '',
   subtitleClass: '',
 };

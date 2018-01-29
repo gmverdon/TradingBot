@@ -1,7 +1,4 @@
-.disabled {
-  background-color: '#dfdfdf';
-}
-
 .subtitle {
   white-space: nowrap;
+  text-align: right;
 }

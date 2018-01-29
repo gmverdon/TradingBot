@@ -145,8 +145,8 @@ export default class TradeHub extends Component {
   render = () => {
     const { sellEnabled, selectedCrypto, cryptoList, boughtPrice, quantity } = this.state;
     const diffPercentage = this.state.diffPercentage * 100;
-    const currentPrice = this.state.currentPrice.toFixed(6);
-    const highestPrice = this.state.highestPrice.toFixed(6);
+    const currentPrice = this.state.currentPrice;
+    const highestPrice = this.state.highestPrice;
     const sellPrice = (highestPrice - (highestPrice * this.state.diffPercentage)).toFixed(6);
 
     const highestPriceChange = this.getPercentageChange(highestPrice, currentPrice).toFixed(2);
@@ -247,9 +247,8 @@ export default class TradeHub extends Component {
             </Col>
             <Col>
               <InfoPanel
-                enabled={false}
                 title={`${sellPrice} ${selectedCrypto.baseAsset}/${selectedCrypto.quoteAsset} `}
-                description={`Price at which the bot will sell.`}
+                description={`${sellPrice > boughtPrice ? 'Price at which the bot will sell' : '	Bot will not sell. Lower than bought price' }.`}
                 subtitle={`${sellPriceChange}%`}
                 subtitleClass={sellPriceChange >= 0 ? "text-success" : "text-danger"}
               />
