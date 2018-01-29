@@ -56,15 +56,15 @@ export default class TradeHub extends Component {
     });
   };
 
-  setBoughtPrice = price => this.setState({ boughtPrice: price });
+  setBoughtPrice = price => this.setState({ boughtPrice: parseFloat(price) });
 
-  setQuantity = quantity => this.setState({ quantity });
+  setQuantity = quantity => this.setState({ quantity: parseFloat(quantity) });
 
-  setDiffPercentage = percentage => this.setState({ diffPercentage: percentage / 100 });
+  setDiffPercentage = percentage => this.setState({ diffPercentage: parseFloat(percentage) / 100 });
 
   setSellEnabled = value => this.setState({ sellEnabled: value });
 
-  setHighestPrice = price => this.setState({ highestPrice: price });
+  setHighestPrice = price => this.setState({ highestPrice: parseFloat(price) });
 
   isHighestPrice = price => price > this.state.highestPrice;
 
@@ -121,10 +121,6 @@ export default class TradeHub extends Component {
       this.setState({ currentPrice });
       this.checkPrice(currentPrice);
     });
-
-    binance.trades("SNMBTC", (error, trades, symbol) => {
-    	console.log(symbol+" trade history", trades);
-    });
   };
 
   removeSocket = endpoint => binance.websockets.terminate(endpoint);
@@ -141,12 +137,20 @@ export default class TradeHub extends Component {
     this.bindSocket(newCrypto);
   };
 
+  getPercentageChange = (oldNumber, newNumber) => {
+    let decreaseValue = oldNumber - newNumber;
+    return (decreaseValue / oldNumber) * 100;
+  }
+
   render = () => {
     const { sellEnabled, selectedCrypto, cryptoList, boughtPrice, quantity } = this.state;
     const diffPercentage = this.state.diffPercentage * 100;
     const currentPrice = this.state.currentPrice.toFixed(6);
     const highestPrice = this.state.highestPrice.toFixed(6);
     const sellPrice = (highestPrice - (highestPrice * this.state.diffPercentage)).toFixed(6);
+
+    const highestPriceChange = this.getPercentageChange(highestPrice, currentPrice).toFixed(2);
+    const sellPriceChange = this.getPercentageChange(sellPrice, boughtPrice).toFixed(2);
 
     const sellOptions = [
       {
@@ -237,12 +241,17 @@ export default class TradeHub extends Component {
               <InfoPanel
                 title={`${highestPrice} ${selectedCrypto.baseAsset}/${selectedCrypto.quoteAsset}`}
                 description={`Highest price since bot is running.`}
+                subtitle={`${highestPriceChange}%`}
+                subtitleClass={highestPriceChange >= 0 ? "text-success" : "text-danger"}
               />
             </Col>
             <Col>
               <InfoPanel
+                enabled={false}
                 title={`${sellPrice} ${selectedCrypto.baseAsset}/${selectedCrypto.quoteAsset} `}
                 description={`Price at which the bot will sell.`}
+                subtitle={`${sellPriceChange}%`}
+                subtitleClass={sellPriceChange >= 0 ? "text-success" : "text-danger"}
               />
             </Col>
           </Row>
