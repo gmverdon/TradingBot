@@ -1,40 +1,33 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './styles.css';
+import ListItem from './components/ListItem';
 
-class HorizontalTabList extends Component {
 
-  getListItems() {
-    const list = this.props.list;
-    const listItems = [];
+export default class HorizontalTabList extends Component {
+  static propTypes = {
+    selectedValue: PropTypes.string.isRequired,
+    list: PropTypes.arrayOf(PropTypes.shape({
+      symbol: PropTypes.string,
+    })).isRequired,
+    changeSelected: PropTypes.func.isRequired,
+  };
 
-    for (let i = 0; i < list.length; i++) {
-      const newItem = this.generateListItem(list[i].symbol, i);
-      listItems.push(newItem);
-    }
+  getListItems = () =>
+    this.props.list.map(item => (
+      <ListItem
+        title={item.symbol}
+        selected={this.props.selectedValue === item.symbol}
+        key={`listItem_${item.symbol}`}
+        changeSelected={this.changeSelected}
+      />
+    ));
 
-    return listItems;
-  }
+  changeSelected = title => this.props.changeSelected(title);
 
-  generateListItem(title, counter) {
-    if (title === this.props.selectedItem.symbol) {
-      return <li className="list-inline-item active" key={counter}>{title}</li>;
-    } else {
-      return <li className="list-inline-item" key={counter} onClick={() => this.changeSelectedItem(title)}>{title}</li>;
-    }
-  }
-
-  changeSelectedItem(title) {
-    this.props.changeSelected(title);
-  }
-
-  render() {
-    return (
-      <ul className="list-inline tablist">
-        {this.getListItems()}
-      </ul>
-    )
-  }
-
+  render = () => (
+    <ul className="list-inline tablist">
+      {this.getListItems()}
+    </ul>
+  );
 }
-
-export default HorizontalTabList;
