@@ -6,7 +6,6 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
 } from 'reactstrap';
 import './styles.css';
 
