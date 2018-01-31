@@ -31,7 +31,7 @@ export default class TradeHub extends Component {
     highestPrice: 0,
     sellEnabled: false,
     sold: false,
-    alert: { isOpen: true, message: 'Welkom bij de tradingbot', color: 'success' },
+    alert: { isOpen: true, message: 'Welcome, happy trading!', color: 'primary' },
   };
 
   componentDidMount = () => {
@@ -101,9 +101,17 @@ export default class TradeHub extends Component {
   };
 
   sell = (price) => {
-    alert(`Sold ${this.state.quantity} at: ${price}!`);
+    binance.sell(this.state.selectedCrypto.symbol, this.state.quantity, price);
+
+    const alert = Object.assign({}, this.state.alert);
+    alert.isOpen = true;
+    alert.message = `Trading bot sold ${this.state.quantity} ${this.state.selectedCrypto.baseAsset}
+                    at ${price} ${this.state.selectedCrypto.symbol}. Refresh the page for a new strategy.`
+    alert.color = 'success';
+
     this.setState({
       sold: true,
+      alert,
     });
   };
 
@@ -176,7 +184,6 @@ export default class TradeHub extends Component {
 
     return (
       <div>
-
         <Header />
 
         <Container>
@@ -266,16 +273,6 @@ export default class TradeHub extends Component {
             </Col>
           </Row>
         </Container>
-
-
-        <div>
-          <hr />
-          <p>(only when the price is higher then the boughtPrice).<br />
-            Difference between highestprice
-            and sell price is {(this.state.diffPercentage * 100).toFixed(2)}%
-          </p>
-          <h1>Sold: {this.state.sold.toString()}</h1>
-        </div>
       </div>
     );
   };
