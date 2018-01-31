@@ -1,21 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+} from 'reactstrap';
 import './styles.css';
 
-// Libraries
-import { Link } from 'react-router-dom'
-
-class Header extends Component {
-  render() {
-    return (
-      <div>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/tradehub">TradeHub</Link></li>
-        </ul>
-        <hr/>
-      </div>
-    )
-  }
-}
+const Header = () => (
+  <Navbar color="faded" light expand="md">
+    <NavbarBrand href="/">TradeHub</NavbarBrand>
+    <NavbarToggler />
+    <Collapse isOpen navbar>
+      <Nav className="ml-auto" navbar>
+      </Nav>
+    </Collapse>
+  </Navbar>
+);
 
 export default Header;

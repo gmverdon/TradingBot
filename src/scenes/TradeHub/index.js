@@ -1,150 +1,279 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import binance from 'node-binance-api';
+import { Container, Row, Col } from 'reactstrap';
 import './styles.css';
-
-// Libraries
-import binance from 'binance-api';
-
-// Components
+import AlertMessage from '../../components/AlertMessage';
 import Header from '../../components/Header';
+import HorizontalTabList from '../../components/HorizontalTabList';
+import InfoPanel from '../../components/InfoPanel';
+import InputPanel from '../../components/InputPanel';
+import OptionPanel from '../../components/OptionPanel';
+import Chart from '../../components/Chart';
 
-class TradeHub extends Component {
-  constructor(props) {
-    super(props);
+export default class TradeHub extends Component {
+  static propTypes = {
+    opts: PropTypes.shape({
+      binance: PropTypes.shape({
+        key: PropTypes.string.isRequired,
+        secret: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  };
 
-    this.state = {
-      currentPrice: 14800,
-      boughtPrice: 14800,
-      diffPercentage: 0.01,
-      highestPrice: 0,
-      messages: [],
-      sellEnabled: false,
-      hasSold: false
-    }
+  state = {
+    cryptoList: [],
+    selectedCrypto: { symbol: 'ETHBTC', baseAsset: 'ETH', quoteAsset: 'BTC' },
+    quantity: 0,
+    currentPrice: 0,
+    boughtPrice: 0,
+    diffPercentage: 0.01,
+    highestPrice: 0,
+    sellEnabled: false,
+    sold: false,
+    alert: { isOpen: true, message: 'Welcome, happy trading!', color: 'primary' },
+  };
 
+  componentDidMount = () => {
     binance.options({
-      'APIKEY':      props.opts.binance.key,
-      'APISECRET':   props.opts.binance.secret,
-      'recvWindow': 60000
-    })
-
-    // bindings
-    this.setBoughtPrice = this.setBoughtPrice.bind(this);
-    this.setDiffPercentage = this.setDiffPercentage.bind(this);
-    this.toggleSellEnabled = this.toggleSellEnabled.bind(this);
-  }
-
-  componentDidMount() {
-    var self = this;
-    binance.websockets.candlesticks(['BTCUSDT'], "1m", function(candlesticks) {
-      let { e:eventType, E:eventTime, s:symbol, k:ticks } = candlesticks;
-      let { o:open, h:high, l:low, c:close, v:volume, n:trades, i:interval, x:isFinal, q:quoteVolume, V:buyVolume, Q:quoteBuyVolume } = ticks;
-      //console.log(symbol+" "+interval+" candlestick update");
-      self.setState({
-        currentPrice: close
-      })
-      self.checkPrice(close);
+      APIKEY: this.props.opts.binance.key,
+      APISECRET: this.props.opts.binance.secret,
+      reconnect: false,
+      test: true,
     });
+
+    this.getCryptoList();
+    this.bindSocket(this.state.selectedCrypto.symbol);
+  };
+
+  onDismiss = () => {
+    const alert = Object.assign({}, this.state.alert);
+    alert.isOpen = false;
+    this.setState({ alert });
   }
 
-  checkPrice(currentPrice) {
-    if (currentPrice > this.state.boughtPrice) {
-      if (this.isHighestPrice(currentPrice)) {
-        this.setHighestPrice(currentPrice);
-        return;
+  getPercentageChange = (oldNumber, newNumber) => {
+    const decreaseValue = oldNumber - newNumber;
+    return (decreaseValue / oldNumber) * 100;
+  }
+
+  getCryptoList = () => {
+    fetch('https://api.binance.com/api/v1/exchangeInfo').then(res => res.json()).then((data) => {
+      const cryptoList = data.symbols;
+      if (cryptoList.length > 0) {
+        this.setState({
+          cryptoList,
+          selectedCrypto: cryptoList[0],
+        });
       }
+    });
+  };
 
-      if (this.shouldSell(currentPrice)) {
-        this.sell(currentPrice);
-        return;
-      }
+  setBoughtPrice = price => this.setState({ boughtPrice: parseFloat(price) });
+
+  setQuantity = quantity => this.setState({ quantity: parseFloat(quantity) });
+
+  setDiffPercentage = percentage => this.setState({ diffPercentage: parseFloat(percentage) / 100 });
+
+  setSellEnabled = value => this.setState({ sellEnabled: value });
+
+  setHighestPrice = price => this.setState({ highestPrice: parseFloat(price) });
+
+  isHighestPrice = price => price > this.state.highestPrice;
+
+  shouldSell = (price) => {
+    const { sellEnabled, sold, highestPrice, diffPercentage } = this.state;
+    if (sellEnabled && !sold) {
+      return price <= highestPrice - (highestPrice * diffPercentage);
     }
-  }
+    return false;
+  };
 
-  isHighestPrice(currentPrice) {
-    let isHighestPrice = currentPrice > this.state.highestPrice;
-    return isHighestPrice;
-  }
+  checkPrice = (price) => {
+    if (price < this.state.boughtPrice) return;
 
-  setHighestPrice(currentPrice) {
-    console.log("Previous highestPrice: " + this.state.highestPrice);
-    this.setState({
-      highestPrice: currentPrice
-    })
-    console.log("New highestPrice: " + this.state.highestPrice)
-  }
-
-  shouldSell(currentPrice) {
-    if (this.state.sellEnabled && !this.state.hasSold) {
-      let shouldSell = (currentPrice <= (this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage));
-      return shouldSell;
+    if (this.isHighestPrice(price)) {
+      this.setHighestPrice(price);
+      return;
     }
-  }
 
-  sell(currentPrice) {
-    alert("SOLD at " + currentPrice);
-    console.log("SOLD at " + currentPrice);
+    if (this.shouldSell(price)) this.sell(price);
+  };
+
+  sell = (price) => {
+    binance.sell(this.state.selectedCrypto.symbol, this.state.quantity, price);
+
+    const alert = Object.assign({}, this.state.alert);
+    alert.isOpen = true;
+    alert.message = `Trading bot sold ${this.state.quantity} ${this.state.selectedCrypto.baseAsset}
+                    at ${price} ${this.state.selectedCrypto.symbol}. Refresh the page for a new strategy.`
+    alert.color = 'success';
+
     this.setState({
-      hasSold: true
-    })
-  }
+      sold: true,
+      alert,
+    });
+  };
 
-  setBoughtPrice(e) {
+  changeSelectedCrypto = (symbol) => {
+    const crypto = this.state.cryptoList.find(obj => obj.symbol === symbol);
+    if (crypto === null) return;
+
+    binance.prices((error, ticker) => {
+      const currentPrice = parseFloat(ticker[crypto.symbol]);
+      this.setState({
+        currentPrice,
+        sellEnabled: false,
+        highestPrice: currentPrice,
+      });
+    });
+
     this.setState({
-      boughtPrice: e.target.value
-    })
-  }
+      selectedCrypto: crypto,
+    }, () => this.rebindSocket());
+  };
 
-  setDiffPercentage(e) {
-    let diffPercentage = (e.target.value / 100);
-    this.setState({
-      diffPercentage: diffPercentage
-    })
-  }
+  bindSocket = (symbol) => {
+    binance.websockets.candlesticks([symbol], '1m', (candlesticks) => {
+      const { k: ticks } = candlesticks;
+      const { c: close } = ticks;
+      const currentPrice = parseFloat(close);
 
-  toggleSellEnabled() {
-    this.setState({
-      sellEnabled: !this.state.sellEnabled
-    })
-  }
+      this.setState({ currentPrice });
+      this.checkPrice(currentPrice);
+    });
+  };
 
-  render() {
+  removeSocket = endpoint => binance.websockets.terminate(endpoint);
+
+  rebindSocket = () => {
+    const newCrypto = this.state.selectedCrypto.symbol;
+    const newEndpoint = `${newCrypto.toLowerCase()} @kline_1m`;
+    const subscriptions = binance.websockets.subscriptions();
+
+    Object.keys(subscriptions).forEach((endpoint) => {
+      if (endpoint !== newEndpoint) this.removeSocket(endpoint);
+    });
+
+    this.bindSocket(newCrypto);
+  };
+
+  render = () => {
+    const {
+      sellEnabled, selectedCrypto, cryptoList, boughtPrice, quantity, currentPrice, highestPrice,
+    } = this.state;
+
+    const diffPercentage = this.state.diffPercentage * 100;
+    const sellPrice = (highestPrice - (highestPrice * this.state.diffPercentage)).toFixed(6);
+
+    const highestPriceChange = this.getPercentageChange(highestPrice, currentPrice).toFixed(2);
+    const sellPriceChange = this.getPercentageChange(sellPrice, boughtPrice).toFixed(2);
+
+    const sellOptions = [
+      {
+        label: 'Enable',
+        value: true,
+        color: 'success',
+      },
+      {
+        label: 'Disable',
+        value: false,
+        color: 'danger',
+      },
+    ];
+
     return (
       <div>
         <Header />
-        <div>
-          <h1>Current price: {this.state.currentPrice}</h1>
-          <hr/>
-          <h1>Bought at this price:</h1>
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Price at which you bought."
-            onChange={this.setBoughtPrice}
-            value={this.state.boughtPrice}/>
-          <hr/>
-          <h1>Highest price since bought: {this.state.highestPrice}</h1>
-          <hr/>
-          <h1>Will sell at: {(this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage)} </h1>
-          <p>(only when the price is higher then the boughtPrice). <br/>
-            Difference between highestprice and sell price is {(this.state.diffPercentage * 100).toFixed(2)}%</p>
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Difference between highestprice and sell price."
-              onChange={this.setDiffPercentage}
-              value={(this.state.diffPercentage * 100).toFixed(2)}/>
-          <hr/>
-          <p>Can sell (if enabled, the bot will sell at {(this.state.highestPrice - this.state.highestPrice * this.state.diffPercentage)})</p>
-          <input
-            type="checkbox"
-            onChange={this.toggleSellEnabled}
-            checked={this.state.sellEnabled}/>
-          <hr/>
-          <h1>Sold: {this.state.hasSold.toString()}</h1>
-        </div>
-      </div>
-    )
-  }
-}
 
-export default TradeHub;
+        <Container>
+          <AlertMessage {...this.state} onDismiss={this.onDismiss} />
+          <HorizontalTabList
+            list={cryptoList}
+            selectedValue={this.state.selectedCrypto.symbol}
+            changeSelected={this.changeSelectedCrypto}
+          />
+          <Row>
+            <Col>
+              <InputPanel
+                name="quantity"
+                value={quantity}
+                step="0.01"
+                onChange={this.setQuantity}
+                title="Quantity"
+                description={`How many ${selectedCrypto.baseAsset} you give the bot to sell.`}
+                placeholder="Quantity"
+              />
+            </Col>
+            <Col>
+              <InputPanel
+                name="bought_price"
+                value={boughtPrice}
+                step="0.01"
+                onChange={this.setBoughtPrice}
+                title="Bought"
+                description={`Price in ${selectedCrypto.quoteAsset} at which you bought ${selectedCrypto.baseAsset}.`}
+                placeholder="Bought price"
+              />
+            </Col>
+
+            <Col>
+              <InputPanel
+                name="diffpercentage"
+                value={diffPercentage}
+                step="0.01"
+                onChange={this.setDiffPercentage}
+                title="Difference"
+                description="% between highest price and sell price."
+                placeholder="Difference %"
+              />
+            </Col>
+
+            <Col>
+              <OptionPanel
+                options={sellOptions}
+                value={sellEnabled}
+                onChange={this.setSellEnabled}
+                title="Bot strategy"
+                description="Should the bot start trading? (note: only sells with profit)."
+              />
+            </Col>
+          </Row>
+        </Container>
+
+        <Container className="mt-3">
+          <Row>
+            <Col><Chart symbol={this.state.selectedCrypto.symbol} /></Col>
+          </Row>
+        </Container>
+
+        <Container className="mt-3">
+          <Row>
+            <Col>
+              <InfoPanel
+                title={` ${currentPrice} ${selectedCrypto.baseAsset}/${selectedCrypto.quoteAsset}`}
+                description="Current price."
+              />
+            </Col>
+            <Col>
+              <InfoPanel
+                title={`${highestPrice} ${selectedCrypto.baseAsset}/${selectedCrypto.quoteAsset}`}
+                description="Highest price since bot is running."
+                subtitle={`${highestPriceChange}%`}
+                subtitleClass={highestPriceChange >= 0 ? 'text-success' : 'text-danger'}
+              />
+            </Col>
+            <Col>
+              <InfoPanel
+                title={`${sellPrice} ${selectedCrypto.baseAsset}/${selectedCrypto.quoteAsset} `}
+                description={`${sellPrice > boughtPrice ? 'Price at which the bot will sell' : 'Bot will not sell. Lower than bought price'}.`}
+                subtitle={`${sellPriceChange}%`}
+                subtitleClass={sellPriceChange >= 0 ? 'text-success' : 'text-danger'}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    );
+  };
+}

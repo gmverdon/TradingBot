@@ -1,34 +1,32 @@
-import React, {Component} from 'react'
-
-// Libraries
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Link
-} from 'react-router-dom'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-// Components
-import Home from './Home';
+  Switch,
+} from 'react-router-dom';
+import PropTypes from 'prop-types';
 import TradeHub from './TradeHub';
 
-class Root extends Component {
-  render() {
-    return (
-      <MuiThemeProvider>
-        <Router>
-          <div>
-            <Route exact path='/' render={(props) => (
-              <Home opts={this.props.opts} />
-            )}/>
-            <Route exact path='/tradehub' render={(props) => (
-              <TradeHub opts={this.props.opts} />
-            )}/>
-          </div>
-        </Router>
-      </MuiThemeProvider>
-    )
-  }
-}
+const Root = ({ opts }) => (
+  <Router>
+    <Switch>
+      <Route
+        exact
+        path="/"
+        render={props => <TradeHub {...props} opts={opts} />}
+      />
+      <Route render={props => <TradeHub {...props} opts={opts} />} />
+    </Switch>
+  </Router>
+);
+
+Root.propTypes = {
+  opts: PropTypes.shape({
+    binance: PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      secret: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default Root;
