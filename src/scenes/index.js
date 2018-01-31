@@ -5,7 +5,6 @@ import {
   Switch,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Home from './Home';
 import TradeHub from './TradeHub';
 
 const Root = ({ opts }) => (
@@ -14,11 +13,6 @@ const Root = ({ opts }) => (
       <Route
         exact
         path="/"
-        render={props => <Home {...props} opts={opts} />}
-      />
-      <Route
-        exact
-        path="/tradehub"
         render={props => <TradeHub {...props} opts={opts} />}
       />
       <Route render={props => <TradeHub {...props} opts={opts} />} />

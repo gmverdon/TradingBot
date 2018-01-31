@@ -17,7 +17,7 @@ const Header = () => (
     <Collapse isOpen navbar>
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <NavLink to="/tradehub">TradeHub</NavLink>
+          <NavLink to="/">Refresh</NavLink>
         </NavItem>
       </Nav>
     </Collapse>
