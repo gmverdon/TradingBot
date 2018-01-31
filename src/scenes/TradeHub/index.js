@@ -101,6 +101,7 @@ export default class TradeHub extends Component {
   };
 
   sell = (price) => {
+    binance.sell(this.state.selectedCrypto.symbol, this.state.quantity, price);
     alert(`Sold ${this.state.quantity} at: ${price}!`);
     this.setState({
       sold: true,
