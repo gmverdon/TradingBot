@@ -6,7 +6,6 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
 } from 'reactstrap';
 import './styles.css';
 
@@ -16,9 +15,6 @@ const Header = () => (
     <NavbarToggler />
     <Collapse isOpen navbar>
       <Nav className="ml-auto" navbar>
-        <NavItem>
-          <NavLink to="/tradehub">TradeHub</NavLink>
-        </NavItem>
       </Nav>
     </Collapse>
   </Navbar>
