@@ -16,9 +16,6 @@ const Header = () => (
     <NavbarToggler />
     <Collapse isOpen navbar>
       <Nav className="ml-auto" navbar>
-        <NavItem>
-          <NavLink to="/">Refresh</NavLink>
-        </NavItem>
       </Nav>
     </Collapse>
   </Navbar>
