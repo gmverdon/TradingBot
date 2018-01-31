@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import binance from 'node-binance-api';
 import { Container, Row, Col } from 'reactstrap';
 import './styles.css';
+import AlertMessage from '../../components/AlertMessage';
 import Header from '../../components/Header';
 import HorizontalTabList from '../../components/HorizontalTabList';
 import InfoPanel from '../../components/InfoPanel';
@@ -23,12 +24,14 @@ export default class TradeHub extends Component {
   state = {
     cryptoList: [],
     selectedCrypto: { symbol: 'ETHBTC', baseAsset: 'ETH', quoteAsset: 'BTC' },
+    quantity: 0,
     currentPrice: 0,
     boughtPrice: 0,
     diffPercentage: 0.01,
     highestPrice: 0,
     sellEnabled: false,
     sold: false,
+    alert: { isOpen: true, message: 'Welkom bij de tradingbot', color: 'success' },
   };
 
   componentDidMount = () => {
@@ -36,11 +39,23 @@ export default class TradeHub extends Component {
       APIKEY: this.props.opts.binance.key,
       APISECRET: this.props.opts.binance.secret,
       reconnect: false,
+      test: true,
     });
 
     this.getCryptoList();
     this.bindSocket(this.state.selectedCrypto.symbol);
   };
+
+  onDismiss = () => {
+    const alert = Object.assign({}, this.state.alert);
+    alert.isOpen = false;
+    this.setState({ alert });
+  }
+
+  getPercentageChange = (oldNumber, newNumber) => {
+    const decreaseValue = oldNumber - newNumber;
+    return (decreaseValue / oldNumber) * 100;
+  }
 
   getCryptoList = () => {
     fetch('https://api.binance.com/api/v1/exchangeInfo').then(res => res.json()).then((data) => {
@@ -54,13 +69,15 @@ export default class TradeHub extends Component {
     });
   };
 
-  setBoughtPrice = price => this.setState({ boughtPrice: price });
+  setBoughtPrice = price => this.setState({ boughtPrice: parseFloat(price) });
 
-  setDiffPercentage = percentage => this.setState({ diffPercentage: percentage / 100 });
+  setQuantity = quantity => this.setState({ quantity: parseFloat(quantity) });
+
+  setDiffPercentage = percentage => this.setState({ diffPercentage: parseFloat(percentage) / 100 });
 
   setSellEnabled = value => this.setState({ sellEnabled: value });
 
-  setHighestPrice = price => this.setState({ highestPrice: price });
+  setHighestPrice = price => this.setState({ highestPrice: parseFloat(price) });
 
   isHighestPrice = price => price > this.state.highestPrice;
 
@@ -84,7 +101,7 @@ export default class TradeHub extends Component {
   };
 
   sell = (price) => {
-    alert(`Sold at: ${price}!`);
+    alert(`Sold ${this.state.quantity} at: ${price}!`);
     this.setState({
       sold: true,
     });
@@ -134,11 +151,15 @@ export default class TradeHub extends Component {
   };
 
   render = () => {
-    const { sellEnabled, selectedCrypto, cryptoList, boughtPrice } = this.state;
+    const {
+      sellEnabled, selectedCrypto, cryptoList, boughtPrice, quantity, currentPrice, highestPrice,
+    } = this.state;
+
     const diffPercentage = this.state.diffPercentage * 100;
-    const currentPrice = this.state.currentPrice.toFixed(6);
-    const highestPrice = this.state.highestPrice.toFixed(6);
     const sellPrice = (highestPrice - (highestPrice * this.state.diffPercentage)).toFixed(6);
+
+    const highestPriceChange = this.getPercentageChange(highestPrice, currentPrice).toFixed(2);
+    const sellPriceChange = this.getPercentageChange(sellPrice, boughtPrice).toFixed(2);
 
     const sellOptions = [
       {
@@ -155,9 +176,11 @@ export default class TradeHub extends Component {
 
     return (
       <div>
+
         <Header />
 
         <Container>
+          <AlertMessage {...this.state} onDismiss={this.onDismiss} />
           <HorizontalTabList
             list={cryptoList}
             selectedValue={this.state.selectedCrypto.symbol}
@@ -166,12 +189,23 @@ export default class TradeHub extends Component {
           <Row>
             <Col>
               <InputPanel
+                name="quantity"
+                value={quantity}
+                step="0.01"
+                onChange={this.setQuantity}
+                title="Quantity"
+                description={`How many ${selectedCrypto.baseAsset} you give the bot to sell.`}
+                placeholder="Quantity"
+              />
+            </Col>
+            <Col>
+              <InputPanel
                 name="bought_price"
                 value={boughtPrice}
                 step="0.01"
                 onChange={this.setBoughtPrice}
                 title="Bought"
-                description={`Price in ${selectedCrypto.quoteAsset} at which you bought ${selectedCrypto.baseAsset}`}
+                description={`Price in ${selectedCrypto.quoteAsset} at which you bought ${selectedCrypto.baseAsset}.`}
                 placeholder="Bought price"
               />
             </Col>
@@ -183,7 +217,7 @@ export default class TradeHub extends Component {
                 step="0.01"
                 onChange={this.setDiffPercentage}
                 title="Difference"
-                description="% between highestprice and sell price."
+                description="% between highest price and sell price."
                 placeholder="Difference %"
               />
             </Col>
@@ -193,8 +227,8 @@ export default class TradeHub extends Component {
                 options={sellOptions}
                 value={sellEnabled}
                 onChange={this.setSellEnabled}
-                title="Should sell"
-                description={`If the bot should sell at ${sellPrice}`}
+                title="Bot strategy"
+                description="Should the bot start trading? (note: only sells with profit)."
               />
             </Col>
           </Row>
@@ -210,24 +244,29 @@ export default class TradeHub extends Component {
           <Row>
             <Col>
               <InfoPanel
-                title={`${selectedCrypto.quoteAsset} ${currentPrice}`}
-                description={`${selectedCrypto.baseAsset} current price`}
+                title={` ${currentPrice} ${selectedCrypto.baseAsset}/${selectedCrypto.quoteAsset}`}
+                description="Current price."
               />
             </Col>
             <Col>
               <InfoPanel
-                title={`${selectedCrypto.quoteAsset} ${highestPrice}`}
-                description={`${selectedCrypto.baseAsset} hightest price since bought`}
+                title={`${highestPrice} ${selectedCrypto.baseAsset}/${selectedCrypto.quoteAsset}`}
+                description="Highest price since bot is running."
+                subtitle={`${highestPriceChange}%`}
+                subtitleClass={highestPriceChange >= 0 ? 'text-success' : 'text-danger'}
               />
             </Col>
             <Col>
               <InfoPanel
-                title={`${selectedCrypto.quoteAsset} ${sellPrice}`}
-                description={`${selectedCrypto.baseAsset} price to sell on`}
+                title={`${sellPrice} ${selectedCrypto.baseAsset}/${selectedCrypto.quoteAsset} `}
+                description={`${sellPrice > boughtPrice ? 'Price at which the bot will sell' : 'Bot will not sell. Lower than bought price'}.`}
+                subtitle={`${sellPriceChange}%`}
+                subtitleClass={sellPriceChange >= 0 ? 'text-success' : 'text-danger'}
               />
             </Col>
           </Row>
         </Container>
+
 
         <div>
           <hr />
