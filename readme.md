@@ -2,7 +2,11 @@
 [![npm](https://img.shields.io/npm/v/npm.svg)]()
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/gmverdon/TradingBot/issues)
 
-For as now this trading bot only supports [Binance](https://www.binance.com). It is important to note that this bot is not finished and that the bot cannot trade with real money yet. To use this bot follow these steps:
+For as now this trading bot only supports [Binance](https://www.binance.com). It is important to note that this bot is not finished and that the bot cannot trade with real money yet. 
+
+![alt text](https://github.com/gmverdon/TradingBot/blob/feature/readme/screenshots/TradingHub.png)
+
+To use this bot follow these steps:
 
 ## 1. Cloning
 
@@ -26,8 +30,8 @@ BINANCE_SECRET = ...
 npm start
 ```
 
-## 4. Accept Binance connection (Know problem)
-Currently the Binance API does not have a CORS (Cross-Origin Resource Sharing) header. This results into connection problems when connecting from a browser to their API. If you also have this problem you can try installing a browser plugin which includes the Allow-Control-Allow-Origin: * header clientside. Unfortunately, even with this plugin, it is currently not possible to trade with real money. *I have already informed Binance about this problem*.
+## 4. Accept Binance connection (known issue)
+Currently the Binance API does not contain a CORS (Cross-Origin Resource Sharing) header. This results into connection problems when connecting from a browser to their API. If you have connection problems you can try installing a browser plugin which includes the Allow-Control-Allow-Origin: * header clientside. Unfortunately, even with this plugin, it is currently not possible to trade with real money. *I have already informed Binance about this problem*.
 
 ## 5. Happy Trading
 Use at your own risk.
