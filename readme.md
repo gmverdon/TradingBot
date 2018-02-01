@@ -2,7 +2,11 @@
 [![npm](https://img.shields.io/npm/v/npm.svg)]()
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/gmverdon/TradingBot/issues)
 
-For as now this trading bot only supports [Binance](https://www.binance.com). It is important to note that this bot is not finished and that the bot cannot trade with real money yet. To use this bot follow these steps:
+For as now this trading bot only supports [Binance](https://www.binance.com). It is important to note that this bot is not finished and that the bot cannot trade with real money yet. 
+
+![alt text](https://github.com/gmverdon/TradingBot/blob/feature/readme/screenshots/TradingHub.png)
+
+To use this bot follow these steps:
 
 ## 1. Cloning
 
