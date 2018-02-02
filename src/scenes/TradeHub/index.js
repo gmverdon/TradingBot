@@ -52,6 +52,17 @@ export default class TradeHub extends Component {
     this.setState({ alert });
   }
 
+  setAlert = (isOpen, message, color) => {
+    const alert = Object.assign({}, this.state.alert);
+    alert.isOpen = isOpen;
+    alert.message = message;
+    alert.color = color;
+
+    this.setState({
+      alert,
+    });
+  }
+
   getPercentageChange = (oldNumber, newNumber) => {
     const decreaseValue = oldNumber - newNumber;
     return (decreaseValue / oldNumber) * 100;
@@ -101,17 +112,18 @@ export default class TradeHub extends Component {
   };
 
   sell = (price) => {
-    binance.sell(this.state.selectedCrypto.symbol, this.state.quantity, price);
-
-    const alert = Object.assign({}, this.state.alert);
-    alert.isOpen = true;
-    alert.message = `Trading bot sold ${this.state.quantity} ${this.state.selectedCrypto.baseAsset}
-                    at ${price} ${this.state.selectedCrypto.symbol}. Refresh the page for a new strategy.`
-    alert.color = 'success';
+    binance.marketSell(this.state.selectedCrypto.symbol, this.state.quantity, (error) => {
+      if (error !== null) {
+        this.setAlert(true, `The bot was unable to sell. ${error.toString()}`, 'danger');
+      } else {
+        const alertMessage = `Trading bot sold ${this.state.quantity} ${this.state.selectedCrypto.baseAsset}
+                          at ${price} ${this.state.selectedCrypto.symbol}. Refresh the page for a new strategy.`;
+        this.setAlert(true, alertMessage, 'success');
+      }
+    });
 
     this.setState({
       sold: true,
-      alert,
     });
   };
 
@@ -120,6 +132,13 @@ export default class TradeHub extends Component {
     if (crypto === null) return;
 
     binance.prices((error, ticker) => {
+      if (error !== null) {
+        this.setAlert(true, `Could not change selected crypto. ${error.toString()}`, 'danger');
+        this.setState({
+          alert,
+        });
+      }
+
       const currentPrice = parseFloat(ticker[crypto.symbol]);
       this.setState({
         currentPrice,
@@ -160,7 +179,13 @@ export default class TradeHub extends Component {
 
   render = () => {
     const {
-      sellEnabled, selectedCrypto, cryptoList, boughtPrice, quantity, currentPrice, highestPrice,
+      sellEnabled,
+      selectedCrypto,
+      cryptoList,
+      boughtPrice,
+      quantity,
+      currentPrice,
+      highestPrice,
     } = this.state;
 
     const diffPercentage = this.state.diffPercentage * 100;
