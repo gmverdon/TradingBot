@@ -119,11 +119,10 @@ export default class TradeHub extends Component {
         const alertMessage = `Trading bot sold ${this.state.quantity} ${this.state.selectedCrypto.baseAsset}
                           at ${price} ${this.state.selectedCrypto.symbol}. Refresh the page for a new strategy.`;
         this.setAlert(true, alertMessage, 'success');
+        this.setState({
+          sold: true,
+        });
       }
-    });
-
-    this.setState({
-      sold: true,
     });
   };
 
@@ -137,14 +136,14 @@ export default class TradeHub extends Component {
         this.setState({
           alert,
         });
+      } else {
+        const currentPrice = parseFloat(ticker[crypto.symbol]);
+        this.setState({
+          currentPrice,
+          sellEnabled: false,
+          highestPrice: currentPrice,
+        });
       }
-
-      const currentPrice = parseFloat(ticker[crypto.symbol]);
-      this.setState({
-        currentPrice,
-        sellEnabled: false,
-        highestPrice: currentPrice,
-      });
     });
 
     this.setState({
