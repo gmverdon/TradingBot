@@ -4,7 +4,7 @@
 
 For as now this trading bot only supports [Binance](https://www.binance.com). It is important to note that this bot is not finished and that the bot cannot trade with real money yet. 
 
-![alt text](https://github.com/gmverdon/TradingBot/blob/feature/readme/screenshots/TradingHub.png)
+![TradingHub](https://raw.githubusercontent.com/gmverdon/TradingBot/master/screenshots/TradingHub.png)
 
 To use this bot follow these steps:
 
