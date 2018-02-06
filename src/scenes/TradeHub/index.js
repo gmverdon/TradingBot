@@ -35,6 +35,7 @@ export default class TradeHub extends Component {
   };
 
   componentDidMount = () => {
+    this.checkAPIKeys();
     binance.options({
       APIKEY: this.props.opts.binance.key,
       APISECRET: this.props.opts.binance.secret,
@@ -50,7 +51,7 @@ export default class TradeHub extends Component {
     const alert = Object.assign({}, this.state.alert);
     alert.isOpen = false;
     this.setState({ alert });
-  }
+  };
 
   setAlert = (isOpen, message, color) => {
     const alert = Object.assign({}, this.state.alert);
@@ -61,12 +62,12 @@ export default class TradeHub extends Component {
     this.setState({
       alert,
     });
-  }
+  };
 
   getPercentageChange = (oldNumber, newNumber) => {
     const decreaseValue = oldNumber - newNumber;
     return (decreaseValue / oldNumber) * 100;
-  }
+  };
 
   getCryptoList = () => {
     fetch('https://api.binance.com/api/v1/exchangeInfo').then(res => res.json()).then((data) => {
@@ -132,7 +133,7 @@ export default class TradeHub extends Component {
 
     binance.prices((error, ticker) => {
       if (error !== null) {
-        this.setAlert(true, `Could not change selected crypto. ${error.toString()}`, 'danger');
+        this.setAlert(true, `Could not change selected crypto. ${error.toString()}.`, 'danger');
         this.setState({
           alert,
         });
@@ -149,6 +150,13 @@ export default class TradeHub extends Component {
     this.setState({
       selectedCrypto: crypto,
     }, () => this.rebindSocket());
+  };
+
+  checkAPIKeys = () => {
+    const { key, secret } = this.props.opts.binance;
+    if (!key || !secret) {
+      this.setAlert(true, 'API key/secret not defined. Take a look at the readme on how to add these and restart the server.', 'danger');
+    }
   };
 
   bindSocket = (symbol) => {
