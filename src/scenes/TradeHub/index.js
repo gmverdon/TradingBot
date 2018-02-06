@@ -31,7 +31,7 @@ export default class TradeHub extends Component {
     highestPrice: 0,
     sellEnabled: false,
     sold: false,
-    alert: { isOpen: true, message: 'Welcome, happy trading!', color: 'primary' },
+    alert: { open: true, message: 'Welcome, happy trading!', color: 'primary' },
   };
 
   componentDidMount = () => {
@@ -49,13 +49,13 @@ export default class TradeHub extends Component {
 
   onDismiss = () => {
     const alert = Object.assign({}, this.state.alert);
-    alert.isOpen = false;
+    alert.open = false;
     this.setState({ alert });
   };
 
-  setAlert = (isOpen, message, color) => {
+  setAlert = (open, message, color) => {
     const alert = Object.assign({}, this.state.alert);
-    alert.isOpen = isOpen;
+    alert.open = open;
     alert.message = message;
     alert.color = color;
 
