@@ -121,14 +121,12 @@ export default class TradeHub extends Component {
           this.setAlert(true, `The bot was unable to sell. ${error.toString()}.`, 'danger');
           this.setSellEnabled(false);
         }
-      } else {
-        const alertMessage = `Trading bot sold ${this.state.quantity} ${this.state.selectedCrypto.baseAsset}
-                          at ${price} ${this.state.selectedCrypto.symbol}. Refresh the page for a new strategy.`;
-        this.setAlert(true, alertMessage, 'success');
-        this.setState({
-          sold: true,
-        });
+        return;
       }
+      const alertMessage = `Trading bot sold ${this.state.quantity} ${this.state.selectedCrypto.baseAsset}
+                        at ${price} ${this.state.selectedCrypto.symbol}. Refresh the page for a new strategy.`;
+      this.setAlert(true, alertMessage, 'success');
+      this.setState({ sold: true });
     });
   };
 
@@ -138,7 +136,11 @@ export default class TradeHub extends Component {
 
     binance.prices((error, ticker) => {
       if (error !== null) {
-        this.setAlert(true, `Could not change selected crypto. ${error.toString()}.`, 'danger');
+        this.setAlert(
+          true,
+          `Could not change selected crypto. ${error.toString()}.`,
+          'danger',
+        );
         this.setState({
           alert,
         });
