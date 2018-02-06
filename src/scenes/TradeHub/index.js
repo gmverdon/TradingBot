@@ -112,10 +112,15 @@ export default class TradeHub extends Component {
     if (this.shouldSell(price)) this.sell(price);
   };
 
-  sell = (price) => {
+  sell = (price, retry = true) => {
     binance.marketSell(this.state.selectedCrypto.symbol, this.state.quantity, (error) => {
       if (error !== null) {
-        this.setAlert(true, `The bot was unable to sell. ${error.toString()}`, 'danger');
+        if (retry) {
+          this.sell(price, false);
+        } else {
+          this.setAlert(true, `The bot was unable to sell. ${error.toString()}.`, 'danger');
+          this.setSellEnabled(false);
+        }
       } else {
         const alertMessage = `Trading bot sold ${this.state.quantity} ${this.state.selectedCrypto.baseAsset}
                           at ${price} ${this.state.selectedCrypto.symbol}. Refresh the page for a new strategy.`;
