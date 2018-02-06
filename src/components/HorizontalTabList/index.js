@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import './styles.css';
 import ListItem from './components/ListItem';
 
-
 export default class HorizontalTabList extends Component {
   static propTypes = {
     selectedValue: PropTypes.string.isRequired,

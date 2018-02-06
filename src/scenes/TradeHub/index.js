@@ -31,10 +31,11 @@ export default class TradeHub extends Component {
     highestPrice: 0,
     sellEnabled: false,
     sold: false,
-    alert: { isOpen: true, message: 'Welcome, happy trading!', color: 'primary' },
+    alert: { open: true, message: 'Welcome, happy trading!', color: 'primary' },
   };
 
   componentDidMount = () => {
+    this.checkAPIKeys();
     binance.options({
       APIKEY: this.props.opts.binance.key,
       APISECRET: this.props.opts.binance.secret,
@@ -48,14 +49,25 @@ export default class TradeHub extends Component {
 
   onDismiss = () => {
     const alert = Object.assign({}, this.state.alert);
-    alert.isOpen = false;
+    alert.open = false;
     this.setState({ alert });
-  }
+  };
+
+  setAlert = (open, message, color) => {
+    const alert = Object.assign({}, this.state.alert);
+    alert.open = open;
+    alert.message = message;
+    alert.color = color;
+
+    this.setState({
+      alert,
+    });
+  };
 
   getPercentageChange = (oldNumber, newNumber) => {
     const decreaseValue = oldNumber - newNumber;
     return (decreaseValue / oldNumber) * 100;
-  }
+  };
 
   getCryptoList = () => {
     fetch('https://api.binance.com/api/v1/exchangeInfo').then(res => res.json()).then((data) => {
@@ -100,18 +112,21 @@ export default class TradeHub extends Component {
     if (this.shouldSell(price)) this.sell(price);
   };
 
-  sell = (price) => {
-    binance.sell(this.state.selectedCrypto.symbol, this.state.quantity, price);
-
-    const alert = Object.assign({}, this.state.alert);
-    alert.isOpen = true;
-    alert.message = `Trading bot sold ${this.state.quantity} ${this.state.selectedCrypto.baseAsset}
-                    at ${price} ${this.state.selectedCrypto.symbol}. Refresh the page for a new strategy.`
-    alert.color = 'success';
-
-    this.setState({
-      sold: true,
-      alert,
+  sell = (price, retry = true) => {
+    binance.marketSell(this.state.selectedCrypto.symbol, this.state.quantity, (error) => {
+      if (error !== null) {
+        if (retry) {
+          this.sell(price, false);
+        } else {
+          this.setAlert(true, `The bot was unable to sell. ${error.toString()}.`, 'danger');
+          this.setSellEnabled(false);
+        }
+        return;
+      }
+      const alertMessage = `Trading bot sold ${this.state.quantity} ${this.state.selectedCrypto.baseAsset}
+                        at ${price} ${this.state.selectedCrypto.symbol}. Refresh the page for a new strategy.`;
+      this.setAlert(true, alertMessage, 'success');
+      this.setState({ sold: true });
     });
   };
 
@@ -120,17 +135,35 @@ export default class TradeHub extends Component {
     if (crypto === null) return;
 
     binance.prices((error, ticker) => {
-      const currentPrice = parseFloat(ticker[crypto.symbol]);
-      this.setState({
-        currentPrice,
-        sellEnabled: false,
-        highestPrice: currentPrice,
-      });
+      if (error !== null) {
+        this.setAlert(
+          true,
+          `Could not change selected crypto. ${error.toString()}.`,
+          'danger',
+        );
+        this.setState({
+          alert,
+        });
+      } else {
+        const currentPrice = parseFloat(ticker[crypto.symbol]);
+        this.setState({
+          currentPrice,
+          sellEnabled: false,
+          highestPrice: currentPrice,
+        });
+      }
     });
 
     this.setState({
       selectedCrypto: crypto,
     }, () => this.rebindSocket());
+  };
+
+  checkAPIKeys = () => {
+    const { key, secret } = this.props.opts.binance;
+    if (!key || !secret) {
+      this.setAlert(true, 'API key/secret not defined. Take a look at the readme on how to add these and restart the server.', 'danger');
+    }
   };
 
   bindSocket = (symbol) => {
@@ -160,7 +193,13 @@ export default class TradeHub extends Component {
 
   render = () => {
     const {
-      sellEnabled, selectedCrypto, cryptoList, boughtPrice, quantity, currentPrice, highestPrice,
+      sellEnabled,
+      selectedCrypto,
+      cryptoList,
+      boughtPrice,
+      quantity,
+      currentPrice,
+      highestPrice,
     } = this.state;
 
     const diffPercentage = this.state.diffPercentage * 100;

@@ -4,19 +4,18 @@ import { Alert } from 'reactstrap';
 import './styles.css';
 
 const AlertMessage = ({ alert, onDismiss }) => (
-  <Alert color={alert.color} isOpen={alert.isOpen} toggle={onDismiss}>
+  <Alert color={alert.color} isOpen={alert.open} toggle={onDismiss}>
     {alert.message}
   </Alert>
 );
 
 AlertMessage.propTypes = {
   alert: PropTypes.shape({
-    isOpen: PropTypes.bool,
+    open: PropTypes.bool,
     message: PropTypes.string,
     color: PropTypes.string,
   }).isRequired,
   onDismiss: PropTypes.func.isRequired,
 };
-
 
 export default AlertMessage;
